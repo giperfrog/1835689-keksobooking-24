@@ -124,3 +124,5 @@ const createTotalOffer = () => ({
 });
 
 const similarOffer = Array.from({length: SIMILAR_OFFER_COUNT}, createTotalOffer);
+
+similarOffer();
