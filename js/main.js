@@ -1,4 +1,6 @@
-const AVATAR = [
+/* eslint-disable no-const-assign */
+/* eslint-disable id-length */
+const AVATARS = [
   'img/avatars/user01.png',
   'img/avatars/user02.png',
   'img/avatars/user03.png',
@@ -11,7 +13,7 @@ const AVATAR = [
   'img/avatars/user10.png',
 ];
 
-const TITLE = [
+const TITLES = [
   'Kolibri apartments',
   'Botanika Hostel',
   'Капсульный Хостел Capslock',
@@ -20,7 +22,7 @@ const TITLE = [
   'Capital Hotel',
 ];
 
-const TYPE = [
+const TYPES = [
   'palace',
   'flat',
   'house',
@@ -28,19 +30,19 @@ const TYPE = [
   'hotel',
 ];
 
-const CHECKIN = [
+const CHECKINS = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const CHECKOUT = [
+const CHECKOUTS = [
   '12:00',
   '13:00',
   '14:00',
 ];
 
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'рядом с метро',
   'большая двухспальная кровать',
   'только односпальные кровати',
@@ -62,6 +64,9 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
+const LATITUDE_RANGE = [35.65000, 35.70000];
+const LONGITUDE_RANGE = [139.7000, 139.8000];
+const LOCATION_FLOAT_LENGTH = 5;
 const SIMILAR_OFFER_COUNT = 10;
 
 const getRandomInt = (min, max) => { // Возвращает случайное целое число из переданного диапазона включительно, взято с MDN Web Docs.
@@ -80,49 +85,47 @@ const getRandomFloat = (min, max, decimal) => { // Возвращает случ
 
 const getRandomArrayElement = (elements) => elements[getRandomInt(0, elements.length - 1)]; // Возвращает случайный элемент из массива.
 
-const getArrayRandom = (features) => { // Возвращает новый массив случайной длины из случайных значений, не повторяются.
-  const lengthOfArray = getRandomInt(1, features.length);
-  const array = [];
-
-  while (array.length < lengthOfArray) {
-    const indexOfEl = getRandomInt(0, features.length - 1);
-    const el = features[indexOfEl];
-
-    if (!array.includes(el)) {
-      array.push(el);
-    }
+const shuffledArray = (array) => { // Возвращает перемешанный массив.
+  for (let i = array.length - 1; i > 0; i--) {
+    const  j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
   }
-
   return array;
 };
 
-const createTotalOffer = () => ({
-  return: {
-    author: AVATAR.forEach(),
-    offer: function () {
-      return {
-        title: getRandomArrayElement(TITLE),
-        address: 'location.lat, location.lug',
-        price: getRandomInt(0, 50000),
-        type: getRandomArrayElement(TYPE),
-        rooms: getRandomInt(1, 10),
-        guests: getRandomInt(1, 10),
-        checkin: getRandomArrayElement(CHECKIN),
-        checkout: getRandomArrayElement(CHECKOUT),
-        features: getArrayRandom(FEATURES),
-        description: getRandomArrayElement(DESCRIPTION),
-        photos: getArrayRandom(PHOTOS),
-      };
-    },
-    location: function () {
-      return {
-        lat: getRandomFloat(35.65000, 35.70000, 5),
-        lug: getRandomFloat(139.7000, 139.8000, 5),
-      };
-    },
-  },
-});
+const getRandomArray = (array) => array.slice(0, getRandomInt(1, array.length - 1)); // Возвращает случайную длину массива.
 
-const similarOffer = Array.from({length: SIMILAR_OFFER_COUNT}, createTotalOffer);
+const createTotalOffer = (index) => {
+  const lat = getRandomFloat(LATITUDE_RANGE[0], LATITUDE_RANGE[1], LOCATION_FLOAT_LENGTH);
+  const lng = getRandomFloat(LONGITUDE_RANGE[0], LONGITUDE_RANGE[1], LOCATION_FLOAT_LENGTH);
 
-similarOffer();
+  return {
+    author: {
+      avatar: AVATARS[index],
+    },
+    offer: {
+      title: getRandomArrayElement(TITLES),
+      address: `${lat}, ${lng}`,
+      price: getRandomInt(0, 50000),
+      type: getRandomArrayElement(TYPES),
+      rooms: getRandomInt(1, 10),
+      guests: getRandomInt(1, 10),
+      checkin: getRandomArrayElement(CHECKINS),
+      checkout: getRandomArrayElement(CHECKOUTS),
+      features: getRandomArray(shuffledArray(FEATURES)),
+      description: getRandomArrayElement(DESCRIPTIONS),
+      photos: getRandomArray(shuffledArray(PHOTOS)),
+    },
+    location: {
+      lat: lat,
+      lng: lng,
+    },
+  };
+};
+
+const similarOffers = Array.from({length: SIMILAR_OFFER_COUNT}, (_, index) => createTotalOffer(index));
+
+// eslint-disable-next-line no-console
+console.log(similarOffers);
