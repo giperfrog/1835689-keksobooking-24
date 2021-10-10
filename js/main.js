@@ -119,8 +119,8 @@ const createTotalOffer = (index) => {
       photos: getRandomArray(shuffledArray(PHOTOS)),
     },
     location: {
-      lat: lat,
-      lng: lng,
+      lat,
+      lng,
     },
   };
 };
