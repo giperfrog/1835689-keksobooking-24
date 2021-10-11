@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import {AVATARS, TITLES, TYPES, CHECKINS, CHECKOUTS, DESCRIPTIONS, FEATURES, PHOTOS, LATITUDE_RANGE, LONGITUDE_RANGE, LOCATION_FLOAT_LENGTH} from './date.js';
+import {AVATARS, TITLES, TYPES, CHECKINS, CHECKOUTS, DESCRIPTIONS, FEATURES, PHOTOS, LATITUDE_RANGE, LONGITUDE_RANGE, LOCATION_FLOAT_LENGTH} from './data.js';
 import {getRandomInt, getRandomFloat, getRandomArrayElement, shuffledArray, getRandomArray} from './util.js';
 
 const SIMILAR_OFFER_COUNT = 10;
