@@ -8,6 +8,7 @@ const offerType = {
   hotel: 'Отель',
 };
 
+
 const similarListElement = document.querySelector('#map-canvas');
 const similarOffersTemplate = document.querySelector('#card')
   .content
@@ -21,18 +22,27 @@ similarOffers.forEach((offer) => {
   offerElement.querySelector('.popup__type').textContent = offerType[offer.offer.type];
   offerElement.querySelector('.popup__text--capacity').textContent = `${offer.offer.rooms} комнаты для ${offer.offer.guests} гостей`;
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд до ${offer.offer.checkout}`;
-  const featureDatas = offer.offer.features;
-  const featureList = offerElement.querySelectorAll('.popup__feature');
-  offerElement.querySelector('.popup__features').textContent = featureList.forEach((featureItem) => {
-    const isNecessary = featureDatas.some(
-      (featureData) => featureItem.classList.contains(`popup__feature--${featureData}`));
+
+  const FEATURES = offer.offer.features;
+  const CONTAINER = offerElement.querySelector('.popup__features');
+  const featureList = CONTAINER.querySelectorAll('.popup__feature');
+  featureList.forEach((featureListItem) => {
+    const isNecessary = FEATURES.some(
+      (FEATURE) => featureListItem.classList.contains(`popup__feature--${  FEATURE}`),
+    );
+
     if (!isNecessary) {
-      featureItem.remove();
+      featureListItem.remove();
     }
   });
+
   offerElement.querySelector('.popup__description').textContent = offer.offer.description;
+
   const PHOTOS = offer.offer.photos;
-  offerElement.querySelector('img', '.popup__photos').src = PHOTOS.forEach((photo) => photo);
+  PHOTOS.forEach((photoItem) => {
+    offerElement.querySelector('img', '.popup__photos').src = photoItem;
+  });
+
   offerElement.querySelector('img', '.popup__avatar').src = offer.author.avatar;
 
   similarListElement.appendChild(offerElement);
