@@ -1,6 +1,6 @@
 import {similarOffers} from './data.js';
 
-const offerType = {
+const OFFERS_NAMES = {
   palace: 'Дворец',
   flat: 'Квартира',
   house: 'Дом',
@@ -19,16 +19,16 @@ similarOffers.forEach((offer) => {
   offerElement.querySelector('.popup__title').textContent = offer.offer.title;
   offerElement.querySelector('.popup__text--address').textContent = offer.offer.address;
   offerElement.querySelector('.popup__text--price').textContent = `${offer.offer.price} ₽/ночь`;
-  offerElement.querySelector('.popup__type').textContent = offerType[offer.offer.type];
+  offerElement.querySelector('.popup__type').textContent = OFFERS_NAMES[offer.offer.type];
   offerElement.querySelector('.popup__text--capacity').textContent = `${offer.offer.rooms} комнаты для ${offer.offer.guests} гостей`;
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд до ${offer.offer.checkout}`;
 
-  const FEATURES = offer.offer.features;
-  const CONTAINER = offerElement.querySelector('.popup__features');
-  const featureList = CONTAINER.querySelectorAll('.popup__feature');
+  const features = offer.offer.features;
+  const container = offerElement.querySelector('.popup__features');
+  const featureList = container.querySelectorAll('.popup__feature');
   featureList.forEach((featureListItem) => {
-    const isNecessary = FEATURES.some(
-      (FEATURE) => featureListItem.classList.contains(`popup__feature--${  FEATURE}`),
+    const isNecessary = features.some(
+      (feature) => featureListItem.classList.contains(`popup__feature--${feature}`),
     );
 
     if (!isNecessary) {
@@ -38,12 +38,12 @@ similarOffers.forEach((offer) => {
 
   offerElement.querySelector('.popup__description').textContent = offer.offer.description;
 
-  const PHOTOS = offer.offer.photos;
-  PHOTOS.forEach((photoItem) => {
-    offerElement.querySelector('img', '.popup__photos').src = photoItem;
+  const photos = offer.offer.photos;
+  photos.forEach((photoItem) => {
+    offerElement.querySelector('img.popup__photo').src = photoItem;
   });
 
-  offerElement.querySelector('img', '.popup__avatar').src = offer.author.avatar;
+  offerElement.querySelector('img.popup__avatar').src = offer.author.avatar;
 
   similarListElement.appendChild(offerElement);
 });
