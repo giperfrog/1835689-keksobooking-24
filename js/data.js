@@ -1,3 +1,5 @@
+import {getRandomInt, getRandomFloat, getRandomArrayElement, shuffledArray, getRandomArray} from './util.js';
+
 const AVATARS = [
   'img/avatars/user01.png',
   'img/avatars/user02.png',
@@ -65,5 +67,36 @@ const PHOTOS = [
 const LATITUDE_RANGE = [35.65000, 35.70000];
 const LONGITUDE_RANGE = [139.7000, 139.8000];
 const LOCATION_FLOAT_LENGTH = 5;
+const SIMILAR_OFFER_COUNT = 10;
 
-export {AVATARS, TITLES, TYPES, CHECKINS, CHECKOUTS, DESCRIPTIONS, FEATURES, PHOTOS, LATITUDE_RANGE, LONGITUDE_RANGE, LOCATION_FLOAT_LENGTH};
+const createTotalOffer = (index) => {
+  const lat = getRandomFloat(LATITUDE_RANGE[0], LATITUDE_RANGE[1], LOCATION_FLOAT_LENGTH);
+  const lng = getRandomFloat(LONGITUDE_RANGE[0], LONGITUDE_RANGE[1], LOCATION_FLOAT_LENGTH);
+
+  return {
+    author: {
+      avatar: AVATARS[index],
+    },
+    offer: {
+      title: getRandomArrayElement(TITLES),
+      address: `${lat}, ${lng}`,
+      price: getRandomInt(0, 50000),
+      type: getRandomArrayElement(TYPES),
+      rooms: getRandomInt(1, 10),
+      guests: getRandomInt(1, 10),
+      checkin: getRandomArrayElement(CHECKINS),
+      checkout: getRandomArrayElement(CHECKOUTS),
+      features: getRandomArray(shuffledArray(FEATURES)),
+      description: getRandomArrayElement(DESCRIPTIONS),
+      photos: getRandomArray(shuffledArray(PHOTOS)),
+    },
+    location: {
+      lat,
+      lng,
+    },
+  };
+};
+
+const similarOffers = Array.from({length: SIMILAR_OFFER_COUNT}, (_, index) => createTotalOffer(index));
+
+export {similarOffers};
