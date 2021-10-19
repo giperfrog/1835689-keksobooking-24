@@ -1,4 +1,4 @@
-import {similarOffers} from './data.js';
+import {offers} from './data.js';
 
 const OFFERS_NAMES = {
   palace: 'Дворец',
@@ -9,13 +9,14 @@ const OFFERS_NAMES = {
 };
 
 
-const similarListElement = document.querySelector('#map-canvas');
-const similarOffersTemplate = document.querySelector('#card')
+const listElements = document.querySelector('#map-canvas');
+const offersTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
+const offersListFragment = document.createDocumentFragment();
 
-similarOffers.forEach((offer) => {
-  const offerElement = similarOffersTemplate.cloneNode(true);
+offers.forEach((offer) => {
+  const offerElement = offersTemplate.cloneNode(true);
   offerElement.querySelector('.popup__title').textContent = offer.offer.title;
   offerElement.querySelector('.popup__text--address').textContent = offer.offer.address;
   offerElement.querySelector('.popup__text--price').textContent = `${offer.offer.price} ₽/ночь`;
@@ -45,5 +46,8 @@ similarOffers.forEach((offer) => {
 
   offerElement.querySelector('img.popup__avatar').src = offer.author.avatar;
 
-  similarListElement.appendChild(offerElement);
+  listElements.appendChild(offerElement);
+  offersListFragment.appendChild(offerElement);
 });
+
+listElements.appendChild(offersListFragment.children[0]);
