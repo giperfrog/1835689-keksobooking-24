@@ -1,19 +1,35 @@
-const makeNonActivePage = function (className, blokName) {
-  const element = document.querySelector('.className');
-  element.classList.add(`${className}--disabled`);
-  const elementList = element.children(blokName);
-  elementList.setAttribute('disabled', 'disabled');
+const makePageInactive = () => {
+  const adFormElement = document.querySelector('.ad-form');
+  adFormElement.classList.add('ad-form--disabled');
+  const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
+  adFormInteractiveElements.forEach((element) => {
+    element.disabled = true;
+  });
+
+  const mapFiltersElement = document.querySelector('.map__filters');
+  mapFiltersElement.classList.add('map__filters--disabled');
+  const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
+  mapFiltersInteractiveElements.forEach((element) => {
+    element.disabled = true;
+  });
 };
 
-makeNonActivePage('ad-form', 'fieldset');
-makeNonActivePage('map__filters', 'select');
+//makePageInactive();
 
+const makePageActive = () => {
+  const adFormElement = document.querySelector('.ad-form');
+  adFormElement.classList.remove('ad-form--disabled');
+  const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
+  adFormInteractiveElements.forEach((element) => {
+    element.disabled = false;
+  });
 
-const makeActivePage = function (className, blokName) {
-  const element = document.querySelector('.className');
-  element.classList.remove('--disabled');
-  const elementList = element.children(blokName);
-  elementList.removeAttribute('disabled', 'disabled');
+  const mapFiltersElement = document.querySelector('.map__filters');
+  mapFiltersElement.classList.remove('map__filters--disabled');
+  const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
+  mapFiltersInteractiveElements.forEach((element) => {
+    element.disabled = false;
+  });
 };
 
-makeActivePage();
+makePageInactive();
