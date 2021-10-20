@@ -14,8 +14,6 @@ const makePageInactive = () => {
   });
 };
 
-//makePageInactive();
-
 const makePageActive = () => {
   const adFormElement = document.querySelector('.ad-form');
   adFormElement.classList.remove('ad-form--disabled');
@@ -33,3 +31,4 @@ const makePageActive = () => {
 };
 
 makePageInactive();
+makePageActive();
