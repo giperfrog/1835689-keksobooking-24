@@ -1,2 +1,2 @@
-/* eslint-disable no-console */
+import './form.js';
 import './card.js';

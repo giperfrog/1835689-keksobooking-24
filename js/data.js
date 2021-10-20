@@ -97,6 +97,6 @@ const createTotalOffer = (index) => {
   };
 };
 
-const similarOffers = Array.from({length: SIMILAR_OFFER_COUNT}, (_, index) => createTotalOffer(index));
+const offers = Array.from({length: SIMILAR_OFFER_COUNT}, (_, index) => createTotalOffer(index));
 
-export {similarOffers};
+export {offers};
