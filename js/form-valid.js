@@ -20,7 +20,6 @@ const form = document.querySelector('.ad-form');
 //Подсказка на короткое и длинное значение.
 offerTitleInput.addEventListener('input', () => {
   const titleLength = offerTitleInput.value.length;
-
   if (titleLength < MIN_TITLE_LENGTH) {
     offerTitleInput.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
   } else if (titleLength > MAX_TITLE_LENGTH) {
@@ -39,13 +38,14 @@ const checkRoomsCapacity = () => {
     guestNumber.setCustomValidity(`${selectedRooms}комн. - для ${ROOM_GUEST_MAPPER[selectedRooms].join(' или ')} гостей.`);
   } else {
     guestNumber.setCustomValidity('');
-  }};
+  }
+};
 
 roomNumber.addEventListener('change', checkRoomsCapacity);
 guestNumber.addEventListener('change', checkRoomsCapacity);
 
 //Проверка формы перед отправкой.
-form.addEventListener('submit', (Event) => {
+form.addEventListener('submit', (evt) => {
   checkRoomsCapacity();
   if (!offerTitleInput.validity.valid) {
     offerTitleInput.insertAdjacentHTML('afterend', '<p class="error-message">Заполните правильно поле "Заголовок объявления".</p>');
@@ -62,6 +62,7 @@ form.addEventListener('submit', (Event) => {
   if (!timeIn.validity.valid) {
     timeIn.insertAdjacentHTML('afterend', '<p class="error-message">Заполните поле "Время заезда и выезда".</p>');
   }
-
-  Event.preventDefault();
+  if (!form.validity.valid) {
+    evt.preventDefault();
+  }
 });
