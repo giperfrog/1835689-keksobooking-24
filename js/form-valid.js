@@ -8,12 +8,21 @@ const ROOM_GUEST_MAPPER = {
   100: ['0'],
 };
 
+const TYPE_PRICE_MAPPER = {
+  bungalow: '0',
+  flat: '1000',
+  hotel: '3000',
+  house: '5000',
+  palace: '10000',
+};
+
 const offerTitleInput = document.querySelector('#title');
 const address = document.querySelector('#address');
 const roomNumber = document.querySelector('#room_number');
 const guestNumber = document.querySelector('#capacity');
 const typeInput = document.querySelector('#type');
 const timeIn = document.querySelector('#timein');
+const timeOut = document.querySelector('#timeout');
 const priceInput = document.querySelector('#price');
 const form = document.querySelector('.ad-form');
 
@@ -30,6 +39,27 @@ offerTitleInput.addEventListener('input', () => {
   offerTitleInput.reportValidity();
 });
 
+//Соответствие минимальной цены типу жилья.
+const setTypePrice = () => {
+  const selectTypes = typeInput.value;
+  if (TYPE_PRICE_MAPPER[selectTypes]) {
+    priceInput.placeholder = TYPE_PRICE_MAPPER[selectTypes];
+    priceInput.min = TYPE_PRICE_MAPPER[selectTypes];
+  }
+};
+typeInput.addEventListener('change', setTypePrice);
+
+//Синхронизация время заезда и время выезда.
+const onTimeInChange = () => {
+  timeOut.value = timeIn.value;
+};
+const onTimeOutChange = () => {
+  timeIn.value = timeOut.value;
+};
+
+timeIn.addEventListener('change', onTimeInChange);
+timeOut.addEventListener('change', onTimeOutChange);
+
 // Проверка соответствия количества комнат количеству гостей.
 const checkRoomsCapacity = () => {
   const selectedRooms = roomNumber.value;
@@ -45,24 +75,22 @@ roomNumber.addEventListener('change', checkRoomsCapacity);
 guestNumber.addEventListener('change', checkRoomsCapacity);
 
 //Проверка формы перед отправкой.
-form.addEventListener('submit', (evt) => {
-  checkRoomsCapacity();
-  if (!offerTitleInput.validity.valid) {
-    offerTitleInput.insertAdjacentHTML('afterend', '<p class="error-message">Заполните правильно поле "Заголовок объявления".</p>');
-  }
-  if (!address.validity.valid) {
+const showError = () => {
+  if (address.validity.valueMissing) {
     address.insertAdjacentHTML('afterend', '<p class="error-message">Выберите на карте адрес.</p>');
   }
-  if (!typeInput.validity.valid) {
+  if(typeInput.validity.valueMissing) {
     typeInput.insertAdjacentHTML('afterend', '<p class="error-message">Заполните поле "Тип жилья".</p>');
   }
-  if (!priceInput.validity.valid) {
-    priceInput.insertAdjacentHTML('afterend', '<p class="error-message">Заполните правильно поле "Цена за ночь".</p>');
+  if(timeIn.validity.valueMissing) {
+    timeIn.insertAdjacentElement('afterend', '<p class="error-message">Заполните поле "Время заезда и выезда".</p>');
   }
-  if (!timeIn.validity.valid) {
-    timeIn.insertAdjacentHTML('afterend', '<p class="error-message">Заполните поле "Время заезда и выезда".</p>');
-  }
+};
+
+form.addEventListener('submit', (evt) => {
+  checkRoomsCapacity();
   if (!form.validity.valid) {
+    showError();
     evt.preventDefault();
   }
 });
