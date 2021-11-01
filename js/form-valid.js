@@ -1,14 +1,14 @@
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
-const ROOM_GUEST_MAPPER = {
+const roomGuestMapper = {
   1: ['1'],
   2: ['1', '2'],
   3: ['1', '2', '3'],
   100: ['0'],
 };
 
-const TYPE_PRICE_MAPPER = {
+const typePriceMapper = {
   bungalow: '0',
   flat: '1000',
   hotel: '3000',
@@ -40,14 +40,14 @@ offerTitleInput.addEventListener('input', () => {
 });
 
 //Соответствие минимальной цены типу жилья.
-const setTypePrice = () => {
+const checkAccomoddationPrice = () => {
   const selectTypes = typeInput.value;
-  if (TYPE_PRICE_MAPPER[selectTypes]) {
-    priceInput.placeholder = TYPE_PRICE_MAPPER[selectTypes];
-    priceInput.min = TYPE_PRICE_MAPPER[selectTypes];
+  if (typePriceMapper[selectTypes]) {
+    priceInput.placeholder = typePriceMapper[selectTypes];
+    priceInput.min = typePriceMapper[selectTypes];
   }
 };
-typeInput.addEventListener('change', setTypePrice);
+typeInput.addEventListener('change', checkAccomoddationPrice);
 
 //Синхронизация время заезда и время выезда.
 const onTimeInChange = () => {
@@ -64,8 +64,8 @@ timeOut.addEventListener('change', onTimeOutChange);
 const checkRoomsCapacity = () => {
   const selectedRooms = roomNumber.value;
   const selectedGuests = guestNumber.value;
-  if (!ROOM_GUEST_MAPPER[selectedRooms].includes(selectedGuests)) {
-    guestNumber.setCustomValidity(`${selectedRooms}комн. - для ${ROOM_GUEST_MAPPER[selectedRooms].join(' или ')} гостей.`);
+  if (!roomGuestMapper[selectedRooms].includes(selectedGuests)) {
+    guestNumber.setCustomValidity(`${selectedRooms}комн. - для ${roomGuestMapper[selectedRooms].join(' или ')} гостей.`);
   } else {
     guestNumber.setCustomValidity('');
   }
@@ -79,15 +79,16 @@ const showError = () => {
   if (address.validity.valueMissing) {
     address.insertAdjacentHTML('afterend', '<p class="error-message">Выберите на карте адрес.</p>');
   }
-  if(typeInput.validity.valueMissing) {
+  if (typeInput.validity.valueMissing) {
     typeInput.insertAdjacentHTML('afterend', '<p class="error-message">Заполните поле "Тип жилья".</p>');
   }
-  if(timeIn.validity.valueMissing) {
+  if (timeIn.validity.valueMissing) {
     timeIn.insertAdjacentElement('afterend', '<p class="error-message">Заполните поле "Время заезда и выезда".</p>');
   }
 };
 
 form.addEventListener('submit', (evt) => {
+  checkAccomoddationPrice();
   checkRoomsCapacity();
   if (!form.validity.valid) {
     showError();
