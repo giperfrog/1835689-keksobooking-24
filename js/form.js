@@ -31,4 +31,5 @@ const makePageActive = () => {
 };
 
 makePageInactive();
-makePageActive();
+
+export {makePageActive};

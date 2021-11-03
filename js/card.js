@@ -8,7 +8,6 @@ const OFFERS_NAMES = {
   hotel: 'Отель',
 };
 
-
 const listElements = document.querySelector('#map-canvas');
 const offersTemplate = document.querySelector('#card')
   .content

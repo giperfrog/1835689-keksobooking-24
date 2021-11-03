@@ -41,10 +41,10 @@ offerTitleInput.addEventListener('input', () => {
 
 //Соответствие минимальной цены типу жилья.
 const checkAccomoddationPrice = () => {
-  const selectTypes = typeInput.value;
-  if (typePriceMapper[selectTypes]) {
-    priceInput.placeholder = typePriceMapper[selectTypes];
-    priceInput.min = typePriceMapper[selectTypes];
+  const selectType = typeInput.value;
+  if (typePriceMapper[selectType]) {
+    priceInput.placeholder = typePriceMapper[selectType];
+    priceInput.min = typePriceMapper[selectType];
   }
 };
 typeInput.addEventListener('change', checkAccomoddationPrice);
