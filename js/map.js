@@ -1,5 +1,5 @@
+/* eslint-disable no-console */
 import {makePageActive} from './form.js';
-import {offers} from './data.js';
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -13,7 +13,7 @@ L.tileLayer(
   },
 ).addTo(map);
 
-const OFFERS_NAMES = {
+const typeNameMapper = {
   palace: 'Дворец',
   flat: 'Квартира',
   house: 'Дом',
@@ -51,31 +51,35 @@ mainPinMarker.on('moveend', (evt) => {
   selectedAddressContainer.value = `Координаты: ${lat}, ${lng}`;
 });
 
-//Добавляем показ объявлений на карте.
+//Функция создания объявлений для показа на карте.
 const createPopup = (offer) => {
   const offersTemplate = document.querySelector('#card')
     .content
     .querySelector('.popup');
   const offerElement = offersTemplate.cloneNode(true);
   offerElement.querySelector('.popup__title').textContent = offer.offer.title;
-  offerElement.querySelector('.popup__text--address').textContent = `Координаты: ${offer.offer.address}`;
+  offerElement.querySelector('.popup__text--address').textContent = `${offer.offer.address}`;
   offerElement.querySelector('.popup__text--price').textContent = `${offer.offer.price} ₽/ночь`;
-  offerElement.querySelector('.popup__type').textContent = OFFERS_NAMES[offer.offer.type];
+  offerElement.querySelector('.popup__type').textContent = typeNameMapper[offer.offer.type];
   offerElement.querySelector('.popup__text--capacity').textContent = `${offer.offer.rooms} комнаты для ${offer.offer.guests} гостей`;
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд до ${offer.offer.checkout}`;
 
   const features = offer.offer.features;
   const container = offerElement.querySelector('.popup__features');
   const featureList = container.querySelectorAll('.popup__feature');
-  featureList.forEach((featureListItem) => {
-    const isNecessary = features.some(
-      (feature) => featureListItem.classList.contains(`popup__feature--${feature}`),
-    );
+  if (features === 'null') {
+    container.classList.add('.popup__features--disabled');
+  } else {
+    featureList.forEach((featureListItem) => {
+      const isNecessary = features.some(
+        (feature) => featureListItem.classList.contains(`popup__feature--${feature}`),
+      );
 
-    if (!isNecessary) {
-      featureListItem.remove();
-    }
-  });
+      if (!isNecessary) {
+        featureListItem.remove();
+      }
+    });
+  }
 
   offerElement.querySelector('.popup__description').textContent = offer.offer.description;
 
@@ -115,4 +119,4 @@ const createMarker = (offer) => {
   return marker;
 };
 
-offers.forEach((offer) => createMarker(offer));
+export {createMarker};
