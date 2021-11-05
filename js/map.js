@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {makePageActive} from './form.js';
 
 const map = L.map('map-canvas')
@@ -65,10 +64,10 @@ const createPopup = (offer) => {
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд до ${offer.offer.checkout}`;
 
   const features = offer.offer.features;
-  const container = offerElement.querySelector('.popup__features');
-  const featureList = container.querySelectorAll('.popup__feature');
-  if (features === 'null') {
-    container.classList.add('.popup__features--disabled');
+  const featuresContainer = offerElement.querySelector('.popup__features');
+  const featureList = featuresContainer.querySelectorAll('.popup__feature');
+  if (!features) {
+    featuresContainer.classList.add('.popup__features--disabled');
   } else {
     featureList.forEach((featureListItem) => {
       const isNecessary = features.some(
@@ -84,7 +83,11 @@ const createPopup = (offer) => {
   offerElement.querySelector('.popup__description').textContent = offer.offer.description;
 
   const photos = offer.offer.photos;
-  photos.forEach((photoItem) => {
+  const photosContainer = offerElement.querySelector('.popup__photos');
+  if (!photos) {
+    photosContainer.classList.add('.popup__photos--disabled');
+  } else {
+    photos.forEach((photoItem) => {
     offerElement.querySelector('img.popup__photo').src = photoItem;
   });
 
@@ -116,7 +119,7 @@ const createMarker = (offer) => {
     .addTo(map)
     .bindPopup(createPopup(offer));
 
-  return marker;
+    return marker;
 };
 
 export {createMarker};
