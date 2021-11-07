@@ -87,9 +87,14 @@ const createPopup = (offer) => {
   if (!photos) {
     photosContainer.classList.add('.popup__photos--disabled');
   } else {
+    const template = offerElement.querySelector('img.popup__photo');
     photos.forEach((photoItem) => {
-    offerElement.querySelector('img.popup__photo').src = photoItem;
-  });
+      template.remove();
+      const photo = template.cloneNode(false);
+      photo.src = photoItem;
+      photosContainer.appendChild(photo);
+    });
+  }
 
   offerElement.querySelector('img.popup__avatar').src = offer.author.avatar;
 
@@ -119,7 +124,7 @@ const createMarker = (offer) => {
     .addTo(map)
     .bindPopup(createPopup(offer));
 
-    return marker;
+  return marker;
 };
 
-export {createMarker};
+export {createMarker, mainPinMarker};

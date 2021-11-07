@@ -1,3 +1,6 @@
+import {sendData} from './api';
+import {showSuccessMessage, showErrorMessage} from './util.js';
+
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
@@ -87,11 +90,20 @@ const showError = () => {
   }
 };
 
-form.addEventListener('submit', (evt) => {
-  checkAccomoddationPrice();
-  checkRoomsCapacity();
-  if (!form.validity.valid) {
-    showError();
-    evt.preventDefault();
-  }
-});
+const setUserFormSubmit = () => {
+  form.addEventListener('submit', (evt) => {
+    checkAccomoddationPrice();
+    checkRoomsCapacity();
+    if (!form.validity.valid) {
+      showError();
+      evt.preventDefault();
+    }
+    sendData(
+      new FormData(evt.target),
+      showSuccessMessage(),
+      showErrorMessage(),
+    );
+  });
+};
+
+export {setUserFormSubmit};

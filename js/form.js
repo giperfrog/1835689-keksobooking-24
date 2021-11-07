@@ -1,35 +1,46 @@
+import {mainPinMarker} from './map.js';
+
+const adFormElement = document.querySelector('.ad-form');
+const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
+const mapFiltersElement = document.querySelector('.map__filters');
+const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
+const selectedAddressContainer = document.querySelector('#address');
+
+//Неактивное состояние страницы.
 const makePageInactive = () => {
-  const adFormElement = document.querySelector('.ad-form');
   adFormElement.classList.add('ad-form--disabled');
-  const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
   adFormInteractiveElements.forEach((element) => {
     element.disabled = true;
   });
 
-  const mapFiltersElement = document.querySelector('.map__filters');
   mapFiltersElement.classList.add('map__filters--disabled');
-  const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
   mapFiltersInteractiveElements.forEach((element) => {
     element.disabled = true;
   });
 };
 
+//Активное состояние страницы.
 const makePageActive = () => {
-  const adFormElement = document.querySelector('.ad-form');
   adFormElement.classList.remove('ad-form--disabled');
-  const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
   adFormInteractiveElements.forEach((element) => {
     element.disabled = false;
   });
 
-  const mapFiltersElement = document.querySelector('.map__filters');
   mapFiltersElement.classList.remove('map__filters--disabled');
-  const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
   mapFiltersInteractiveElements.forEach((element) => {
     element.disabled = false;
   });
 };
 
-makePageInactive();
+//Очистка страницы после загрузки.
+const resetPage = () => {
+  adFormElement.reset();
+  mapFiltersElement.reset();
+  mainPinMarker.setLatLng({
+    lat: 35.69600,
+    lng: 139.76830,
+  });
+  selectedAddressContainer.value = 'Координаты: 35.69600, 139.76830';
+};
 
-export {makePageActive};
+export {makePageActive, makePageInactive, resetPage};
