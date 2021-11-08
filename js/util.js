@@ -1,6 +1,9 @@
+import {resetPage} from './form';
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const showSuccessMessage = () => {//Сообщение при успешной загрузке.
+//Если загрузка прошла успешно.
+const onSuccessForm = () => {
   const template = document.querySelector('#success')
     .content
     .querySelector('.success');
@@ -11,6 +14,7 @@ const showSuccessMessage = () => {//Сообщение при успешной �
       element.remove();
     }
   });
+  resetPage();
 };
 
 const showErrorMessage = () => {//Сообщение об ошибке.
@@ -29,4 +33,4 @@ const showErrorMessage = () => {//Сообщение об ошибке.
     }
   });
 };
-export {showSuccessMessage, showErrorMessage};
+export {onSuccessForm, showErrorMessage};

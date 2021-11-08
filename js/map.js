@@ -1,16 +1,4 @@
-import {makePageActive} from './form.js';
-
-const map = L.map('map-canvas')
-  .on('load', () => {
-    makePageActive();
-  })
-  .setView([35.68955, 139.75000], 10);
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
+import {makeFormActive} from './form.js';
 
 const typeNameMapper = {
   palace: 'Дворец',
@@ -20,14 +8,13 @@ const typeNameMapper = {
   hotel: 'Отель',
 };
 
-const selectedAddressContainer = document.querySelector('#address');
-
-//Добавляем главный маркер и функцию показа адреса по главному маркеру.
 const mainPinIcon = L.icon({
   iconUrl: 'img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
+
+const map = L.map('map-canvas');
 
 const mainPinMarker = L.marker(
   {
@@ -39,18 +26,35 @@ const mainPinMarker = L.marker(
     icon: mainPinIcon,
   },
 );
-mainPinMarker.addTo(map);
 
-selectedAddressContainer.value = 'Координаты: 35.69600, 139.76830';
+//Функция отрисовки карты.
+const createMap = () => {
+  const selectedAddressContainer = document.querySelector('#address');
 
-mainPinMarker.on('moveend', (evt) => {
-  const SelectedAddress = evt.target.getLatLng();
-  const lat = Math.round(SelectedAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
-  const lng = Math.round(SelectedAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
-  selectedAddressContainer.value = `Координаты: ${lat}, ${lng}`;
-});
+  map
+    .on('load', () => {
+      makeFormActive();
+    })
+    .setView([35.68955, 139.75000], 10);
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(map);
+  mainPinMarker.addTo(map);
 
-//Функция создания объявлений для показа на карте.
+  selectedAddressContainer.value = 'Координаты: 35.69600, 139.76830';
+
+  mainPinMarker.on('moveend', (evt) => {
+    const SelectedAddress = evt.target.getLatLng();
+    const lat = Math.round(SelectedAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
+    const lng = Math.round(SelectedAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
+    selectedAddressContainer.value = `Координаты: ${lat}, ${lng}`;
+  });
+};
+
+//Функция отрисовки балуна для карты.
 const createPopup = (offer) => {
   const offersTemplate = document.querySelector('#card')
     .content
@@ -67,7 +71,7 @@ const createPopup = (offer) => {
   const featuresContainer = offerElement.querySelector('.popup__features');
   const featureList = featuresContainer.querySelectorAll('.popup__feature');
   if (!features) {
-    featuresContainer.classList.add('.popup__features--disabled');
+    featuresContainer.classList.add('hidden');
   } else {
     featureList.forEach((featureListItem) => {
       const isNecessary = features.some(
@@ -85,11 +89,11 @@ const createPopup = (offer) => {
   const photos = offer.offer.photos;
   const photosContainer = offerElement.querySelector('.popup__photos');
   if (!photos) {
-    photosContainer.classList.add('.popup__photos--disabled');
+    photosContainer.classList.add('hidden');
   } else {
     const template = offerElement.querySelector('img.popup__photo');
+    template.remove();
     photos.forEach((photoItem) => {
-      template.remove();
       const photo = template.cloneNode(false);
       photo.src = photoItem;
       photosContainer.appendChild(photo);
@@ -101,6 +105,7 @@ const createPopup = (offer) => {
   return offerElement;
 };
 
+//Функция создания метки с объявлением на карте.
 const createMarker = (offer) => {
   const {lat, lng} = offer.location;
 
@@ -127,4 +132,4 @@ const createMarker = (offer) => {
   return marker;
 };
 
-export {createMarker, mainPinMarker};
+export {createMap, createMarker, mainPinMarker};
