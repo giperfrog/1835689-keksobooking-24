@@ -1,35 +1,80 @@
+import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange} from './form-valid.js';
+import {sendData} from './api.js';
+import {showErrorMessage} from './util.js';
+import {mainPinMarker} from './map.js';
+
+const adFormElement = document.querySelector('.ad-form');
+const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
+const mapFiltersElement = document.querySelector('.map__filters');
+const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
+const selectedAddressContainer = document.querySelector('#address');
+const title = document.querySelector('#title');
+const type = document.querySelector('#type');
+const timeIn = document.querySelector('#timein');
+const timeOut = document.querySelector('#timeout');
+const roomNumber = document.querySelector('#room_number');
+const guestNumber = document.querySelector('#capacity');
+const form = document.querySelector('.ad-form');
+
+//Неактивное состояние страницы.
 const makePageInactive = () => {
-  const adFormElement = document.querySelector('.ad-form');
   adFormElement.classList.add('ad-form--disabled');
-  const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
   adFormInteractiveElements.forEach((element) => {
     element.disabled = true;
   });
 
-  const mapFiltersElement = document.querySelector('.map__filters');
   mapFiltersElement.classList.add('map__filters--disabled');
-  const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
   mapFiltersInteractiveElements.forEach((element) => {
     element.disabled = true;
   });
 };
 
-const makePageActive = () => {
-  const adFormElement = document.querySelector('.ad-form');
+//Обработчик отправки формы с данными.
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  onTypePriceChange();
+  onRoomsCapacityChange();
+  if (form.checkValidity()) {
+    sendData(
+      new FormData(evt.target),
+    );
+  } else {
+    showErrorMessage();
+  }
+};
+
+//Активация формы для заполнения данных.
+const makeFormActive = () => {
   adFormElement.classList.remove('ad-form--disabled');
-  const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
   adFormInteractiveElements.forEach((element) => {
     element.disabled = false;
   });
+  title.addEventListener('input', onTitleChange);
+  type.addEventListener('change', onTypePriceChange);
+  timeIn.addEventListener('change', onTimeInChange);
+  timeOut.addEventListener('change', onTimeOutChange);
+  roomNumber.addEventListener('change', onRoomsCapacityChange);
+  guestNumber.addEventListener('change', onRoomsCapacityChange);
+  form.addEventListener('submit', onFormSubmit);
+};
 
-  const mapFiltersElement = document.querySelector('.map__filters');
+//Активация фильтров.
+const makeFiltersActive = () => {
   mapFiltersElement.classList.remove('map__filters--disabled');
-  const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
   mapFiltersInteractiveElements.forEach((element) => {
     element.disabled = false;
   });
 };
 
-makePageInactive();
+//Очистка страницы после загрузки.
+const resetPage = () => {
+  adFormElement.reset();
+  mapFiltersElement.reset();
+  mainPinMarker.setLatLng({
+    lat: 35.69600,
+    lng: 139.76830,
+  });
+  selectedAddressContainer.value = 'Координаты: 35.69600, 139.76830';
+};
 
-export {makePageActive};
+export {makePageInactive, makeFormActive, makeFiltersActive, resetPage};
