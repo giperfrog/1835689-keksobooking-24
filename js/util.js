@@ -9,28 +9,48 @@ const onSuccessForm = () => {
     .querySelector('.success');
   const element = template.cloneNode(true);
   document.body.append(element);
-  element.addEventListener('keydown', (evt) => {
+
+  const onKeydown = (evt) => {
     if (isEscapeKey(evt)) {
+      evt.preventDefault();
       element.remove();
+      document.removeEventListener('keydown', onKeydown);
     }
+  };
+  element.addEventListener('keydown', onKeydown);
+
+  element.addEventListener('click', () => {
+    element.remove();
   });
+
   resetPage();
 };
 
-const showErrorMessage = () => {//Сообщение об ошибке.
+//Если загрузка прошла с ошибкой.
+const showErrorMessage = () => {
   const template = document.querySelector('#error')
     .content
     .querySelector('.error');
   const element = template.cloneNode(true);
   document.body.append(element);
+
   const button = document.querySelector('.error__button');
   button.addEventListener('click', () => {
     element.remove();
   });
-  element.addEventListener('keydown', (evt) => {
+
+  const onKeydown = (evt) => {
     if (isEscapeKey(evt)) {
+      evt.preventDefault();
       element.remove();
+      document.removeEventListener('keydown', onKeydown);
     }
+  };
+  element.addEventListener('keydown', onKeydown);
+
+  element.addEventListener('click', () => {
+    element.remove();
   });
 };
+
 export {onSuccessForm, showErrorMessage};

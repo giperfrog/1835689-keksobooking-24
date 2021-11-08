@@ -17,7 +17,7 @@ const typePriceMapper = {
 };
 
 const title = document.querySelector('#title');
-const address = document.querySelector('#address');
+//const address = document.querySelector('#address');
 const roomNumber = document.querySelector('#room_number');
 const guestNumber = document.querySelector('#capacity');
 const type = document.querySelector('#type');
@@ -66,17 +66,4 @@ const onRoomsCapacityChange = () => {
   }
 };
 
-//Проверка формы перед отправкой.
-const showError = () => {
-  if (address.validity.valueMissing) {
-    address.insertAdjacentHTML('afterend', '<p class="error-message">Выберите на карте адрес.</p>');
-  }
-  if (type.validity.valueMissing) {
-    type.insertAdjacentHTML('afterend', '<p class="error-message">Заполните поле "Тип жилья".</p>');
-  }
-  if (timeIn.validity.valueMissing) {
-    timeIn.insertAdjacentElement('afterend', '<p class="error-message">Заполните поле "Время заезда и выезда".</p>');
-  }
-};
-
-export {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, showError};
+export {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange};

@@ -1,6 +1,6 @@
-import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, showError} from './form-valid.js';
+import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange} from './form-valid.js';
 import {sendData} from './api.js';
-import {onSuccessForm, showErrorMessage} from './util.js';
+import {showErrorMessage} from './util.js';
 import {mainPinMarker} from './map.js';
 
 const adFormElement = document.querySelector('.ad-form');
@@ -31,17 +31,16 @@ const makePageInactive = () => {
 
 //Обработчик отправки формы с данными.
 const onFormSubmit = (evt) => {
+  evt.preventDefault();
   onTypePriceChange();
   onRoomsCapacityChange();
-  if (!form.validity.valid) {
-    showError();
-    evt.preventDefault();
+  if (form.checkValidity()) {
+    sendData(
+      new FormData(evt.target),
+    );
+  } else {
+    showErrorMessage();
   }
-  sendData(
-    onSuccessForm,
-    showErrorMessage,
-    new FormData(evt.target),
-  );
 };
 
 //Активация формы для заполнения данных.
