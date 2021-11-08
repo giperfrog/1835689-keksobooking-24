@@ -1,6 +1,3 @@
-import {sendData} from './api';
-import {showSuccessMessage, showErrorMessage} from './util.js';
-
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 
@@ -27,10 +24,9 @@ const type = document.querySelector('#type');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 const price = document.querySelector('#price');
-const form = document.querySelector('.ad-form');
 
 //Подсказка на короткое и длинное значение.
-const helpInputTitle = () => {
+const onTitleChange = () => {
   const titleLength = title.value.length;
   if (titleLength < MIN_TITLE_LENGTH) {
     title.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
@@ -43,7 +39,7 @@ const helpInputTitle = () => {
 };
 
 //Соответствие минимальной цены типу жилья.
-const checkAccomoddationPrice = () => {
+const onTypePriceChange = () => {
   const selectType = type.value;
   if (typePriceMapper[selectType]) {
     price.placeholder = typePriceMapper[selectType];
@@ -60,7 +56,7 @@ const onTimeOutChange = () => {
 };
 
 // Проверка соответствия количества комнат количеству гостей.
-const checkRoomsCapacity = () => {
+const onRoomsCapacityChange = () => {
   const selectedRooms = roomNumber.value;
   const selectedGuests = guestNumber.value;
   if (!roomGuestMapper[selectedRooms].includes(selectedGuests)) {
@@ -83,18 +79,4 @@ const showError = () => {
   }
 };
 
-const setUserFormSubmit = (evt) => {
-  checkAccomoddationPrice();
-  checkRoomsCapacity();
-  if (!form.validity.valid) {
-    showError();
-    evt.preventDefault();
-  }
-  sendData(
-    () => showSuccessMessage(),
-    () => showErrorMessage(),
-    new FormData(evt.target),
-  );
-};
-
-export {title, helpInputTitle, type, checkAccomoddationPrice, timeIn, timeOut, onTimeInChange, onTimeOutChange, roomNumber, guestNumber, checkRoomsCapacity, form, setUserFormSubmit};
+export {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, showError};

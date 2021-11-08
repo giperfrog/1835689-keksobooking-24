@@ -1,4 +1,4 @@
-import {onSuccessForm, showErrorMessage} from './util';
+import {onSuccessForm, showErrorMessage} from './util.js';
 
 const getData = (onSuccess) => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')

@@ -1,4 +1,4 @@
-import {resetPage} from './form';
+import {resetPage} from './form.js';
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
