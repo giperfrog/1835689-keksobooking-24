@@ -17,7 +17,7 @@ const onSuccessForm = () => {
       document.removeEventListener('keydown', onKeydown);
     }
   };
-  element.addEventListener('keydown', onKeydown);
+  document.addEventListener('keydown', onKeydown);
 
   element.addEventListener('click', () => {
     element.remove();
@@ -41,7 +41,7 @@ const showErrorMessage = () => {
       document.removeEventListener('keydown', onKeydown);
     }
   };
-  element.addEventListener('keydown', onKeydown);
+  document.addEventListener('keydown', onKeydown);
 
   element.addEventListener('click', () => {
     element.remove();

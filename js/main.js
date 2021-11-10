@@ -11,7 +11,12 @@ const filterType = document.querySelector('#housing-type');
 const filterPrice = document.querySelector('#housing-price');
 const filterRooms = document.querySelector('#housing-rooms');
 const filterGuests = document.querySelector('#housing-guests');
-const filterFeatures = document.querySelector('#housing-features');
+const filterWifi = document.querySelector('#filter-wifi');
+const filterDishwasher = document.querySelector('#filter-dishwasher');
+const filterParking = document.querySelector('#filter-parking');
+const filterWasher = document.querySelector('#filter-washer');
+const filterElevator = document.querySelector('#filter-elevator');
+const filterConditioner = document.querySelector('#filter-conditioner');
 
 document.addEventListener('DOMContentLoaded', () => {
   makePageInactive();
@@ -43,5 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
   filterPrice.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
   filterRooms.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
   filterGuests.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
-  filterFeatures.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
+  filterWifi.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
+  filterDishwasher.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
+  filterParking.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
+  filterWasher.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
+  filterElevator.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
+  filterConditioner.addEventListener('change', debounce(() => createMarkerGroup(), RERENDER_DELAY));
 });
