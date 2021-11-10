@@ -14,6 +14,7 @@ const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 const roomNumber = document.querySelector('#room_number');
 const guestNumber = document.querySelector('#capacity');
+const button = document.querySelector('.ad-form__reset');
 const form = document.querySelector('.ad-form');
 
 //Неактивное состояние страницы.
@@ -55,6 +56,7 @@ const makeFormActive = () => {
   timeOut.addEventListener('change', onTimeOutChange);
   roomNumber.addEventListener('change', onRoomsCapacityChange);
   guestNumber.addEventListener('change', onRoomsCapacityChange);
+  button.addEventListener('click', resetPage);
   form.addEventListener('submit', onFormSubmit);
 };
 
@@ -67,7 +69,7 @@ const makeFiltersActive = () => {
 };
 
 //Очистка страницы после загрузки.
-const resetPage = () => {
+function resetPage () {
   adFormElement.reset();
   mapFiltersElement.reset();
   mainPinMarker.setLatLng({
@@ -75,6 +77,6 @@ const resetPage = () => {
     lng: 139.76830,
   });
   selectedAddressContainer.value = 'Координаты: 35.69600, 139.76830';
-};
+}
 
 export {makePageInactive, makeFormActive, makeFiltersActive, resetPage};

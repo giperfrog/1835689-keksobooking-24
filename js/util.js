@@ -13,7 +13,7 @@ const onSuccessForm = () => {
   const onKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      element.remove();
+      element.classList.add('hidden');
       document.removeEventListener('keydown', onKeydown);
     }
   };
@@ -34,11 +34,6 @@ const showErrorMessage = () => {
   const element = template.cloneNode(true);
   document.body.append(element);
 
-  const button = document.querySelector('.error__button');
-  button.addEventListener('click', () => {
-    element.remove();
-  });
-
   const onKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
@@ -53,4 +48,16 @@ const showErrorMessage = () => {
   });
 };
 
-export {onSuccessForm, showErrorMessage};
+// Функция взята из интернета и доработана
+// Источник - https://www.freecodecamp.org/news/javascript-debounce-example
+
+const debounce = (callback, timeoutDelay = 500) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {onSuccessForm, showErrorMessage, debounce};

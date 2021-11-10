@@ -27,6 +27,8 @@ const mainPinMarker = L.marker(
   },
 );
 
+const markerGroup = L.layerGroup().addTo(map);
+
 //Функция отрисовки карты.
 const createMap = () => {
   const selectedAddressContainer = document.querySelector('#address');
@@ -54,11 +56,12 @@ const createMap = () => {
   });
 };
 
+const offersTemplate = document.querySelector('#card')
+  .content
+  .querySelector('.popup');
+
 //Функция отрисовки балуна для карты.
 const createPopup = (offer) => {
-  const offersTemplate = document.querySelector('#card')
-    .content
-    .querySelector('.popup');
   const offerElement = offersTemplate.cloneNode(true);
   offerElement.querySelector('.popup__title').textContent = offer.offer.title;
   offerElement.querySelector('.popup__text--address').textContent = `${offer.offer.address}`;
@@ -126,10 +129,59 @@ const createMarker = (offer) => {
   );
 
   marker
-    .addTo(map)
+    .addTo(markerGroup)
     .bindPopup(createPopup(offer));
 
   return marker;
 };
 
-export {createMap, createMarker, mainPinMarker};
+const getOfferRank = (offer) => {
+  const selectedType = document.querySelector('[name="housing-type"]');
+  const selectedPrice = document.querySelector('[name="housing-price"]');
+  const selectedRooms = document.querySelector('[name="housing-rooms"]');
+  const selectedGuests = document.querySelector('[name="housing-guests"]');
+  const featuresContainer = document.querySelector('#housing-features');
+  const featuresInput = featuresContainer.querySelectorAll('[name="features"]');
+
+  let rank = 0;
+  if (offer.offer.type === (selectedType.value || 'any')) {
+    rank += 1;
+  }
+  if (offer.offer.price === (selectedPrice.value || 'any')) {
+    rank += 1;
+  }
+  if (offer.offer.rooms === (selectedRooms.value || 'any')) {
+    rank += 1;
+  }
+  if (offer.offer.guests === (selectedGuests.value || 'any')) {
+    rank += 1;
+  }
+  if (offer.offer.feature === 'wifi' && featuresInput.value === 'wifi') {
+    rank += 1;
+  }
+  if (offer.offer.feature === 'dishwasher' && featuresInput.value === 'dishwasher') {
+    rank += 1;
+  }
+  if (offer.offer.feature === 'parking' && featuresInput.value === 'parking') {
+    rank += 1;
+  }
+  if (offer.offer.feature === 'washer' && featuresInput.value === 'washer') {
+    rank += 1;
+  }
+  if (offer.offer.feature === 'elevator' && featuresInput.value === 'elevator') {
+    rank += 1;
+  }
+  if (offer.offer.feature === 'conditioner' && featuresInput.value === 'conditioner') {
+    rank += 1;
+  }
+
+  return rank;
+};
+
+const compareOffers = (offerA, offerB) => {
+  const rankA = getOfferRank(offerA);
+  const rankB = getOfferRank(offerB);
+  return rankB - rankA;
+};
+
+export {createMap, createMarker, mainPinMarker, markerGroup, compareOffers};
