@@ -46,7 +46,8 @@ const createMap = () => {
   ).addTo(map);
   mainPinMarker.addTo(map);
 
-  selectedAddressContainer.value = 'Координаты: 35.69600, 139.76830';
+  const mainPinMarkerAddress = mainPinMarker.getLatLng();
+  selectedAddressContainer.value = `Координаты: ${mainPinMarkerAddress.lat}, ${mainPinMarkerAddress.lng}`;
 
   mainPinMarker.on('moveend', (evt) => {
     const SelectedAddress = evt.target.getLatLng();
@@ -135,53 +136,4 @@ const createMarker = (offer) => {
   return marker;
 };
 
-const getOfferRank = (offer) => {
-  const selectedType = document.querySelector('[name="housing-type"]');
-  const selectedPrice = document.querySelector('[name="housing-price"]');
-  const selectedRooms = document.querySelector('[name="housing-rooms"]');
-  const selectedGuests = document.querySelector('[name="housing-guests"]');
-  const featuresContainer = document.querySelector('#housing-features');
-  const featuresInput = featuresContainer.querySelectorAll('[name="features"]');
-
-  let rank = 0;
-  if (offer.offer.type === (selectedType.value || 'any')) {
-    rank += 1;
-  }
-  if (offer.offer.price === (selectedPrice.value || 'any')) {
-    rank += 1;
-  }
-  if (offer.offer.rooms === (selectedRooms.value || 'any')) {
-    rank += 1;
-  }
-  if (offer.offer.guests === (selectedGuests.value || 'any')) {
-    rank += 1;
-  }
-  if (offer.offer.feature === 'wifi' && featuresInput.value === 'wifi') {
-    rank += 1;
-  }
-  if (offer.offer.feature === 'dishwasher' && featuresInput.value === 'dishwasher') {
-    rank += 1;
-  }
-  if (offer.offer.feature === 'parking' && featuresInput.value === 'parking') {
-    rank += 1;
-  }
-  if (offer.offer.feature === 'washer' && featuresInput.value === 'washer') {
-    rank += 1;
-  }
-  if (offer.offer.feature === 'elevator' && featuresInput.value === 'elevator') {
-    rank += 1;
-  }
-  if (offer.offer.feature === 'conditioner' && featuresInput.value === 'conditioner') {
-    rank += 1;
-  }
-
-  return rank;
-};
-
-const compareOffers = (offerA, offerB) => {
-  const rankA = getOfferRank(offerA);
-  const rankB = getOfferRank(offerB);
-  return rankB - rankA;
-};
-
-export {createMap, createMarker, mainPinMarker, markerGroup, compareOffers};
+export {createMap, createMarker, mainPinMarker, markerGroup};

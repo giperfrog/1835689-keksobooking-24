@@ -1,4 +1,4 @@
-import {resetPage} from './form.js';
+import {onPageReset} from './form.js';
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -23,7 +23,7 @@ const onSuccessForm = () => {
     element.remove();
   });
 
-  resetPage();
+  onPageReset();
 };
 
 //Если загрузка прошла с ошибкой.
@@ -37,7 +37,7 @@ const showErrorMessage = () => {
   const onKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      element.remove();
+      element.classList.add('hidden');
       document.removeEventListener('keydown', onKeydown);
     }
   };

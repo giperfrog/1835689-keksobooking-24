@@ -16,6 +16,7 @@ const roomNumber = document.querySelector('#room_number');
 const guestNumber = document.querySelector('#capacity');
 const button = document.querySelector('.ad-form__reset');
 const form = document.querySelector('.ad-form');
+//const selectedType = document.querySelector('#housing-type');
 
 //Неактивное состояние страницы.
 const makePageInactive = () => {
@@ -56,8 +57,8 @@ const makeFormActive = () => {
   timeOut.addEventListener('change', onTimeOutChange);
   roomNumber.addEventListener('change', onRoomsCapacityChange);
   guestNumber.addEventListener('change', onRoomsCapacityChange);
-  button.addEventListener('click', resetPage);
   form.addEventListener('submit', onFormSubmit);
+  button.addEventListener('click', onPageReset);
 };
 
 //Активация фильтров.
@@ -69,14 +70,27 @@ const makeFiltersActive = () => {
 };
 
 //Очистка страницы после загрузки.
-function resetPage () {
+function onPageReset () {
   adFormElement.reset();
   mapFiltersElement.reset();
   mainPinMarker.setLatLng({
     lat: 35.69600,
     lng: 139.76830,
   });
-  selectedAddressContainer.value = 'Координаты: 35.69600, 139.76830';
+  selectedAddressContainer.value = mainPinMarker.lat, mainPinMarker.lng;
 }
 
-export {makePageInactive, makeFormActive, makeFiltersActive, resetPage};
+/*const setTypeChange = (cb) => {
+  selectedType.addEventListener('change', () => {
+    if (selectedType.value !== 'any') {
+      const array = offers.filter((offer) => (offer.offer.type === selectedType.value));
+      return array;
+    } else {
+      offers === offers;
+    }
+    cb();
+  });
+};*/
+
+
+export {makePageInactive, makeFormActive, makeFiltersActive, onPageReset};
