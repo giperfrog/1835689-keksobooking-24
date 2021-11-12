@@ -1,6 +1,34 @@
-import {onPageReset} from './form.js';
+import {mainPinMarker, markerGroup} from './map.js';
+import {drawOffers} from './main.js';
+
+const mapFiltersElement = document.querySelector('.map__filters');
+const addressInput = document.querySelector('#address');
+const title = document.querySelector('#title');
+const type = document.querySelector('#type');
+const timeIn = document.querySelector('#timein');
+const timeOut = document.querySelector('#timeout');
+const roomNumber = document.querySelector('#room_number');
+const guestNumber = document.querySelector('#capacity');
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
+
+//Очистка страницы после загрузки.
+const onPageReset = () => {
+  title.value = '';
+  type.value = '';
+  timeIn.value = '';
+  timeOut.value = '';
+  roomNumber.value = '';
+  guestNumber.value = '';
+  addressInput.value = 'Координаты: 35.69600, 139.76830';
+  mapFiltersElement.reset();
+  markerGroup.clearLayers();
+  mainPinMarker.setLatLng({
+    lat: 35.69600,
+    lng: 139.76830,
+  });
+  drawOffers();
+};
 
 //Если загрузка прошла успешно.
 const onSuccessForm = () => {
@@ -60,4 +88,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {onSuccessForm, showErrorMessage, debounce};
+export {onPageReset, onSuccessForm, showErrorMessage, debounce};

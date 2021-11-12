@@ -1,13 +1,11 @@
 import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange} from './form-valid.js';
 import {sendData} from './api.js';
-import {showErrorMessage} from './util.js';
-import {mainPinMarker, markerGroup} from './map.js';
+import {showErrorMessage, onPageReset} from './util.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
 const mapFiltersElement = document.querySelector('.map__filters');
 const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
-const addressInput = document.querySelector('#address');
 const title = document.querySelector('#title');
 const type = document.querySelector('#type');
 const timeIn = document.querySelector('#timein');
@@ -68,21 +66,4 @@ const makeFiltersActive = () => {
   });
 };
 
-//Очистка страницы после загрузки.
-function onPageReset () {
-  title.value = '';
-  type.value = '';
-  timeIn.value = '';
-  timeOut.value = '';
-  roomNumber.value = '';
-  guestNumber.value = '';
-  addressInput.value = 'Координаты: 35.69600, 139.76830';
-  mapFiltersElement.reset();
-  markerGroup.clearLayers();
-  mainPinMarker.setLatLng({
-    lat: 35.69600,
-    lng: 139.76830,
-  });
-}
-
-export {makePageInactive, makeFormActive, makeFiltersActive, onPageReset};
+export {makePageInactive, makeFormActive, makeFiltersActive};
