@@ -1,10 +1,11 @@
 import './map.js';
 import {getData} from './api.js';
-import {createMap, createMarker} from './map.js';
+import {createMap, createMarker, markerGroup} from './map.js';
 import {makePageInactive, makeFiltersActive} from './form.js';
-//import {debounce} from './util.js';
+import {debounce} from './util.js';
 
 const SIMILAR_OFFER_COUNT = 10;
+const RERENDER_DELAY = 500;
 
 const selectedType = document.querySelector('#housing-type');
 const selectedPrice = document.querySelector('#housing-price');
@@ -30,13 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     makeFiltersActive();
 
-    const onFiltersCheck = () => {
+    const onFiltersChange = () => {
       let filteredOffers = offers;
 
-      if (selectedType !== 'any') {
+      markerGroup.clearLayers();
+
+      if (selectedType.value !== 'any') {
         filteredOffers = filteredOffers.filter((offer) => (offer.offer.type === selectedType.value));
       }
-      if (selectedPrice !== 'any') {
+      if (selectedPrice.value !== 'any') {
         filteredOffers = filteredOffers.filter( (offer) => {
           switch (selectedPrice.value) {
             case 'low':
@@ -48,14 +51,14 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       }
-      if (selectedRooms !== 'any') {
-        filteredOffers = filteredOffers.filter((offer) => (offer.offer.rooms === selectedRooms.value));
+      if (selectedRooms.value !== 'any') {
+        filteredOffers = filteredOffers.filter((offer) => (offer.offer.rooms === +selectedRooms.value));
       }
-      if (selectedGuests !== 'any') {
-        filteredOffers = filteredOffers.filter((offer) => (offer.offer.guests === selectedGuests.value));
+      if (selectedGuests.value !== 'any') {
+        filteredOffers = filteredOffers.filter((offer) => (offer.offer.guests === +selectedGuests.value));
       }
-      const selectedFeatures = [...featuresInputs].filter((input) => input.checked);
 
+      const selectedFeatures = [...featuresInputs].filter((input) => input.checked);
       filteredOffers = filteredOffers.filter((offer) => {
         if (offer.offer.features) {
           return selectedFeatures.every((feature) => offer.offer.features.includes(feature));
@@ -67,15 +70,16 @@ document.addEventListener('DOMContentLoaded', () => {
         createMarker(offer);
       });
     };
-    selectedType.addEventListener('change', onFiltersCheck);
-    selectedPrice.addEventListener('change', onFiltersCheck);
-    selectedRooms.addEventListener('change', onFiltersCheck);
-    selectedGuests.addEventListener('change', onFiltersCheck);
-    wifiInput.addEventListener('click', onFiltersCheck);
-    dishwasherInput.addEventListener('click', onFiltersCheck);
-    parkingInput.addEventListener('click', onFiltersCheck);
-    washerInput.addEventListener('click', onFiltersCheck);
-    elevatorInput.addEventListener('click', onFiltersCheck);
-    conditionerInput.addEventListener('click', onFiltersCheck);
+
+    selectedType.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
+    selectedPrice.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
+    selectedRooms.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
+    selectedGuests.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
+    wifiInput.addEventListener('click', debounce(() => onFiltersChange(), RERENDER_DELAY));
+    dishwasherInput.addEventListener('click', debounce(() => onFiltersChange(), RERENDER_DELAY));
+    parkingInput.addEventListener('click', debounce(() => onFiltersChange(), RERENDER_DELAY));
+    washerInput.addEventListener('click', debounce(() => onFiltersChange(), RERENDER_DELAY));
+    elevatorInput.addEventListener('click', debounce(() => onFiltersChange(), RERENDER_DELAY));
+    conditionerInput.addEventListener('click', debounce(() => onFiltersChange(), RERENDER_DELAY));
   });
 });

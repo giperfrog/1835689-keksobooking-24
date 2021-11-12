@@ -31,8 +31,7 @@ const markerGroup = L.layerGroup().addTo(map);
 
 //Функция отрисовки карты.
 const createMap = () => {
-  const selectedAddressContainer = document.querySelector('#address');
-
+  const addressInput = document.querySelector('#address');
   map
     .on('load', () => {
       makeFormActive();
@@ -46,14 +45,13 @@ const createMap = () => {
   ).addTo(map);
   mainPinMarker.addTo(map);
 
-  const mainPinMarkerAddress = mainPinMarker.getLatLng();
-  selectedAddressContainer.value = `Координаты: ${mainPinMarkerAddress.lat}, ${mainPinMarkerAddress.lng}`;
+  addressInput.value = 'Координаты: 35.69600, 139.76830';
 
   mainPinMarker.on('moveend', (evt) => {
     const SelectedAddress = evt.target.getLatLng();
     const lat = Math.round(SelectedAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
     const lng = Math.round(SelectedAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
-    selectedAddressContainer.value = `Координаты: ${lat}, ${lng}`;
+    addressInput.value = `Координаты: ${lat}, ${lng}`;
   });
 };
 

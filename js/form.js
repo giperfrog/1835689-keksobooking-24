@@ -1,13 +1,13 @@
 import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange} from './form-valid.js';
 import {sendData} from './api.js';
 import {showErrorMessage} from './util.js';
-import {mainPinMarker} from './map.js';
+import {mainPinMarker, markerGroup} from './map.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
 const mapFiltersElement = document.querySelector('.map__filters');
 const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
-const selectedAddressContainer = document.querySelector('#address');
+const addressInput = document.querySelector('#address');
 const title = document.querySelector('#title');
 const type = document.querySelector('#type');
 const timeIn = document.querySelector('#timein');
@@ -16,7 +16,6 @@ const roomNumber = document.querySelector('#room_number');
 const guestNumber = document.querySelector('#capacity');
 const button = document.querySelector('.ad-form__reset');
 const form = document.querySelector('.ad-form');
-//const selectedType = document.querySelector('#housing-type');
 
 //Неактивное состояние страницы.
 const makePageInactive = () => {
@@ -71,26 +70,19 @@ const makeFiltersActive = () => {
 
 //Очистка страницы после загрузки.
 function onPageReset () {
-  adFormElement.reset();
+  title.value = '';
+  type.value = '';
+  timeIn.value = '';
+  timeOut.value = '';
+  roomNumber.value = '';
+  guestNumber.value = '';
+  addressInput.value = 'Координаты: 35.69600, 139.76830';
   mapFiltersElement.reset();
+  markerGroup.clearLayers();
   mainPinMarker.setLatLng({
     lat: 35.69600,
     lng: 139.76830,
   });
-  selectedAddressContainer.value = mainPinMarker.lat, mainPinMarker.lng;
 }
-
-/*const setTypeChange = (cb) => {
-  selectedType.addEventListener('change', () => {
-    if (selectedType.value !== 'any') {
-      const array = offers.filter((offer) => (offer.offer.type === selectedType.value));
-      return array;
-    } else {
-      offers === offers;
-    }
-    cb();
-  });
-};*/
-
 
 export {makePageInactive, makeFormActive, makeFiltersActive, onPageReset};
