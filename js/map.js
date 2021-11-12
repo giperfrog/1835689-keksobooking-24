@@ -27,10 +27,11 @@ const mainPinMarker = L.marker(
   },
 );
 
+const markerGroup = L.layerGroup().addTo(map);
+
 //Функция отрисовки карты.
 const createMap = () => {
-  const selectedAddressContainer = document.querySelector('#address');
-
+  const addressInput = document.querySelector('#address');
   map
     .on('load', () => {
       makeFormActive();
@@ -44,21 +45,22 @@ const createMap = () => {
   ).addTo(map);
   mainPinMarker.addTo(map);
 
-  selectedAddressContainer.value = 'Координаты: 35.69600, 139.76830';
+  addressInput.value = 'Координаты: 35.69600, 139.76830';
 
   mainPinMarker.on('moveend', (evt) => {
     const SelectedAddress = evt.target.getLatLng();
     const lat = Math.round(SelectedAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
     const lng = Math.round(SelectedAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
-    selectedAddressContainer.value = `Координаты: ${lat}, ${lng}`;
+    addressInput.value = `Координаты: ${lat}, ${lng}`;
   });
 };
 
+const offersTemplate = document.querySelector('#card')
+  .content
+  .querySelector('.popup');
+
 //Функция отрисовки балуна для карты.
 const createPopup = (offer) => {
-  const offersTemplate = document.querySelector('#card')
-    .content
-    .querySelector('.popup');
   const offerElement = offersTemplate.cloneNode(true);
   offerElement.querySelector('.popup__title').textContent = offer.offer.title;
   offerElement.querySelector('.popup__text--address').textContent = `${offer.offer.address}`;
@@ -126,10 +128,10 @@ const createMarker = (offer) => {
   );
 
   marker
-    .addTo(map)
+    .addTo(markerGroup)
     .bindPopup(createPopup(offer));
 
   return marker;
 };
 
-export {createMap, createMarker, mainPinMarker};
+export {createMap, createMarker, mainPinMarker, markerGroup};
