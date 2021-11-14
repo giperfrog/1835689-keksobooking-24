@@ -1,5 +1,7 @@
 import {makeFormActive} from './form.js';
 
+const coordinates = [35.69600, 139.76830];
+
 const typeNameMapper = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -13,6 +15,8 @@ const mainPinIcon = L.icon({
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
+
+const addressInput = document.querySelector('#address');
 
 const map = L.map('map-canvas');
 
@@ -31,7 +35,6 @@ const markerGroup = L.layerGroup().addTo(map);
 
 //Функция отрисовки карты.
 const createMap = () => {
-  const addressInput = document.querySelector('#address');
   map
     .on('load', () => {
       makeFormActive();
@@ -45,23 +48,23 @@ const createMap = () => {
   ).addTo(map);
   mainPinMarker.addTo(map);
 
-  addressInput.value = 'Координаты: 35.69600, 139.76830';
+  addressInput.value = `${coordinates[0].toFixed(5)}, ${coordinates[1].toFixed(5)}`;
 
   mainPinMarker.on('moveend', (evt) => {
-    const SelectedAddress = evt.target.getLatLng();
-    const lat = Math.round(SelectedAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
-    const lng = Math.round(SelectedAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
-    addressInput.value = `Координаты: ${lat}, ${lng}`;
+    const SelectionAddress = evt.target.getLatLng();
+    const lat = Math.round(SelectionAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
+    const lng = Math.round(SelectionAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
+    addressInput.value = `${lat}, ${lng}`;
   });
 };
 
-const offersTemplate = document.querySelector('#card')
+const offerTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
 //Функция отрисовки балуна для карты.
 const createPopup = (offer) => {
-  const offerElement = offersTemplate.cloneNode(true);
+  const offerElement = offerTemplate.cloneNode(true);
   offerElement.querySelector('.popup__title').textContent = offer.offer.title;
   offerElement.querySelector('.popup__text--address').textContent = `${offer.offer.address}`;
   offerElement.querySelector('.popup__text--price').textContent = `${offer.offer.price} ₽/ночь`;
@@ -93,10 +96,10 @@ const createPopup = (offer) => {
   if (!photos) {
     photosContainer.classList.add('hidden');
   } else {
-    const template = offerElement.querySelector('img.popup__photo');
-    template.remove();
+    const photoTemplate = offerElement.querySelector('img.popup__photo');
+    photoTemplate.remove();
     photos.forEach((photoItem) => {
-      const photo = template.cloneNode(false);
+      const photo = photoTemplate.cloneNode(false);
       photo.src = photoItem;
       photosContainer.appendChild(photo);
     });
@@ -134,4 +137,4 @@ const createMarker = (offer) => {
   return marker;
 };
 
-export {createMap, createMarker, mainPinMarker, markerGroup};
+export {createMap, createMarker, mainPinMarker, markerGroup, coordinates};

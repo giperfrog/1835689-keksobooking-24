@@ -16,34 +16,33 @@ const typePriceMapper = {
   palace: '10000',
 };
 
-const title = document.querySelector('#title');
-//const address = document.querySelector('#address');
-const roomNumber = document.querySelector('#room_number');
-const guestNumber = document.querySelector('#capacity');
-const type = document.querySelector('#type');
+const inputTitle = document.querySelector('#title');
+const inputType = document.querySelector('#type');
+const inputRoomNumber = document.querySelector('#room_number');
+const inputGuestNumber = document.querySelector('#capacity');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 const price = document.querySelector('#price');
 
 //Подсказка на короткое и длинное значение.
 const onTitleChange = () => {
-  const titleLength = title.value.length;
+  const titleLength = inputTitle.value.length;
   if (titleLength < MIN_TITLE_LENGTH) {
-    title.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
+    inputTitle.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
   } else if (titleLength > MAX_TITLE_LENGTH) {
-    title.setCustomValidity(`Удалите лишние ${titleLength - MAX_TITLE_LENGTH} симв.`);
+    inputTitle.setCustomValidity(`Удалите лишние ${titleLength - MAX_TITLE_LENGTH} симв.`);
   } else {
-    title.setCustomValidity('');
+    inputTitle.setCustomValidity('');
   }
-  title.reportValidity();
+  inputTitle.reportValidity();
 };
 
 //Соответствие минимальной цены типу жилья.
 const onTypePriceChange = () => {
-  const selectType = type.value;
-  if (typePriceMapper[selectType]) {
-    price.placeholder = typePriceMapper[selectType];
-    price.min = typePriceMapper[selectType];
+  const optionType = inputType.value;
+  if (typePriceMapper[optionType]) {
+    price.placeholder = typePriceMapper[optionType];
+    price.min = typePriceMapper[optionType];
   }
 };
 
@@ -57,12 +56,12 @@ const onTimeOutChange = () => {
 
 // Проверка соответствия количества комнат количеству гостей.
 const onRoomsCapacityChange = () => {
-  const selectedRooms = roomNumber.value;
-  const selectedGuests = guestNumber.value;
-  if (!roomGuestMapper[selectedRooms].includes(selectedGuests)) {
-    guestNumber.setCustomValidity(`${selectedRooms}комн. - для ${roomGuestMapper[selectedRooms].join(' или ')} гостей.`);
+  const optionRooms = inputRoomNumber.value;
+  const optionGuests = inputGuestNumber.value;
+  if (!roomGuestMapper[optionRooms].includes(optionGuests)) {
+    inputGuestNumber.setCustomValidity(`${optionRooms}комн. - для ${roomGuestMapper[optionRooms].join(' или ')} гостей.`);
   } else {
-    guestNumber.setCustomValidity('');
+    inputGuestNumber.setCustomValidity('');
   }
 };
 

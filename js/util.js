@@ -1,26 +1,16 @@
-import {mainPinMarker, markerGroup} from './map.js';
+import {mainPinMarker, markerGroup, coordinates} from './map.js';
 import {drawOffers} from './main.js';
 
+const adFormElement = document.querySelector('.ad-form');
 const mapFiltersElement = document.querySelector('.map__filters');
 const addressInput = document.querySelector('#address');
-const title = document.querySelector('#title');
-const type = document.querySelector('#type');
-const timeIn = document.querySelector('#timein');
-const timeOut = document.querySelector('#timeout');
-const roomNumber = document.querySelector('#room_number');
-const guestNumber = document.querySelector('#capacity');
+const price = document.querySelector('#price');
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 //Очистка страницы после загрузки.
 const onPageReset = () => {
-  title.value = '';
-  type.value = '';
-  timeIn.value = '';
-  timeOut.value = '';
-  roomNumber.value = '';
-  guestNumber.value = '';
-  addressInput.value = 'Координаты: 35.69600, 139.76830';
+  adFormElement.reset();
   mapFiltersElement.reset();
   markerGroup.clearLayers();
   mainPinMarker.setLatLng({
@@ -28,27 +18,29 @@ const onPageReset = () => {
     lng: 139.76830,
   });
   drawOffers();
+  price.placeholder = '5000';
+  addressInput.value = `${coordinates[0].toFixed(5)}, ${coordinates[1].toFixed(5)}`;
 };
 
 //Если загрузка прошла успешно.
 const onSuccessForm = () => {
-  const template = document.querySelector('#success')
+  const templateSuccess = document.querySelector('#success')
     .content
     .querySelector('.success');
-  const element = template.cloneNode(true);
-  document.body.append(element);
+  const elementShowSuccess = templateSuccess.cloneNode(true);
+  document.body.append(elementShowSuccess);
 
   const onKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      element.classList.add('hidden');
+      elementShowSuccess.remove();
       document.removeEventListener('keydown', onKeydown);
     }
   };
   document.addEventListener('keydown', onKeydown);
 
-  element.addEventListener('click', () => {
-    element.remove();
+  elementShowSuccess.addEventListener('click', () => {
+    elementShowSuccess.remove();
   });
 
   onPageReset();
@@ -56,23 +48,23 @@ const onSuccessForm = () => {
 
 //Если загрузка прошла с ошибкой.
 const showErrorMessage = () => {
-  const template = document.querySelector('#error')
+  const templateError = document.querySelector('#error')
     .content
     .querySelector('.error');
-  const element = template.cloneNode(true);
-  document.body.append(element);
+  const elementShowError = templateError.cloneNode(true);
+  document.body.append(elementShowError);
 
   const onKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      element.classList.add('hidden');
+      elementShowError.remove();
       document.removeEventListener('keydown', onKeydown);
     }
   };
   document.addEventListener('keydown', onKeydown);
 
-  element.addEventListener('click', () => {
-    element.remove();
+  elementShowError.addEventListener('click', () => {
+    elementShowError.remove();
   });
 };
 

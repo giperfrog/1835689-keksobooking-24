@@ -6,12 +6,12 @@ const adFormElement = document.querySelector('.ad-form');
 const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
 const mapFiltersElement = document.querySelector('.map__filters');
 const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
-const title = document.querySelector('#title');
-const type = document.querySelector('#type');
-const timeIn = document.querySelector('#timein');
-const timeOut = document.querySelector('#timeout');
-const roomNumber = document.querySelector('#room_number');
-const guestNumber = document.querySelector('#capacity');
+const inputTitle = document.querySelector('#title');
+const inputType = document.querySelector('#type');
+const inputTimeIn = document.querySelector('#timein');
+const inputTimeOut = document.querySelector('#timeout');
+const inputRoomNumber = document.querySelector('#room_number');
+const inputGuestNumber = document.querySelector('#capacity');
 const button = document.querySelector('.ad-form__reset');
 const form = document.querySelector('.ad-form');
 
@@ -48,12 +48,12 @@ const makeFormActive = () => {
   adFormInteractiveElements.forEach((element) => {
     element.disabled = false;
   });
-  title.addEventListener('input', onTitleChange);
-  type.addEventListener('change', onTypePriceChange);
-  timeIn.addEventListener('change', onTimeInChange);
-  timeOut.addEventListener('change', onTimeOutChange);
-  roomNumber.addEventListener('change', onRoomsCapacityChange);
-  guestNumber.addEventListener('change', onRoomsCapacityChange);
+  inputTitle.addEventListener('input', onTitleChange);
+  inputType.addEventListener('change', onTypePriceChange);
+  inputTimeIn.addEventListener('change', onTimeInChange);
+  inputTimeOut.addEventListener('change', onTimeOutChange);
+  inputRoomNumber.addEventListener('change', onRoomsCapacityChange);
+  inputGuestNumber.addEventListener('change', onRoomsCapacityChange);
   form.addEventListener('submit', onFormSubmit);
   button.addEventListener('click', onPageReset);
 };
