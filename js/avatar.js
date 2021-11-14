@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const inputAvatar = document.querySelector('#avatar');
-const preview1 = document.querySelector('.ad-form-header__preview.img');
+const preview1 = document.querySelector('.ad-form-header__preview');
 
 inputAvatar.addEventListener('change', () => {
   const file = inputAvatar.files[0];

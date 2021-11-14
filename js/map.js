@@ -51,9 +51,9 @@ const createMap = () => {
   addressInput.value = `${coordinates[0].toFixed(5)}, ${coordinates[1].toFixed(5)}`;
 
   mainPinMarker.on('moveend', (evt) => {
-    const SelectionAddress = evt.target.getLatLng();
-    const lat = Math.round(SelectionAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
-    const lng = Math.round(SelectionAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
+    const selectionAddress = evt.target.getLatLng();
+    const lat = Math.round(selectionAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
+    const lng = Math.round(selectionAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
     addressInput.value = `${lat}, ${lng}`;
   });
 };
