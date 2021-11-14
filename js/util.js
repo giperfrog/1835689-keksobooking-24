@@ -1,15 +1,18 @@
-import {mainPinMarker, markerGroup, coordinates} from './map.js';
+import {mainPinMarker, markerGroup, MAIN_PIN_MARKER_COORDINATES} from './map.js';
 import {drawOffers} from './main.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const mapFiltersElement = document.querySelector('.map__filters');
 const addressInput = document.querySelector('#address');
-const price = document.querySelector('#price');
+const inputPrice = document.querySelector('#price');
+const preview1 = document.querySelector('.ad-form-header__preview');
+const photoHousing = document.querySelector('.ad-form__photo');
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-//Очистка страницы после загрузки.
-const onPageReset = () => {
+
+//Функция для очистки страницы.
+const getClearFormOnPage = () => {
   adFormElement.reset();
   mapFiltersElement.reset();
   markerGroup.clearLayers();
@@ -18,8 +21,16 @@ const onPageReset = () => {
     lng: 139.76830,
   });
   drawOffers();
-  price.placeholder = '5000';
-  addressInput.value = `${coordinates[0].toFixed(5)}, ${coordinates[1].toFixed(5)}`;
+  inputPrice.placeholder = '5000';
+  addressInput.value = `${MAIN_PIN_MARKER_COORDINATES[0].toFixed(5)}, ${MAIN_PIN_MARKER_COORDINATES[1].toFixed(5)}`;
+  preview1.querySelector('img').src = 'img/muffin-grey.svg';
+  photoHousing.querySelector('img').remove();
+};
+
+//Функция для очистки по кнопке сброса.
+const onResetClick = (evt) => {
+  evt.preventDefault();
+  getClearFormOnPage();
 };
 
 //Если загрузка прошла успешно.
@@ -43,7 +54,7 @@ const onSuccessForm = () => {
     elementShowSuccess.remove();
   });
 
-  onPageReset();
+  getClearFormOnPage();
 };
 
 //Если загрузка прошла с ошибкой.
@@ -80,4 +91,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {onPageReset, onSuccessForm, showErrorMessage, debounce};
+export {onResetClick, onSuccessForm, showErrorMessage, debounce};

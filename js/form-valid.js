@@ -22,7 +22,7 @@ const inputRoomNumber = document.querySelector('#room_number');
 const inputGuestNumber = document.querySelector('#capacity');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
-const price = document.querySelector('#price');
+const inputPrice = document.querySelector('#price');
 
 //Подсказка на короткое и длинное значение.
 const onTitleChange = () => {
@@ -38,12 +38,18 @@ const onTitleChange = () => {
 };
 
 //Соответствие минимальной цены типу жилья.
-const onTypePriceChange = () => {
-  const optionType = inputType.value;
-  if (typePriceMapper[optionType]) {
-    price.placeholder = typePriceMapper[optionType];
-    price.min = typePriceMapper[optionType];
+const getConformanceTypePrice = () => {
+  const selectedType = inputType.value;
+  if (typePriceMapper[selectedType]) {
+    inputPrice.placeholder = typePriceMapper[selectedType];
+    inputPrice.min = typePriceMapper[selectedType];
   }
+};
+
+//Функция проверки цены при вводе.
+const onTypePriceChange = (evt) => {
+  evt.preventDefault();
+  getConformanceTypePrice();
 };
 
 //Синхронизация время заезда и время выезда.
@@ -54,8 +60,8 @@ const onTimeOutChange = () => {
   timeIn.value = timeOut.value;
 };
 
-// Проверка соответствия количества комнат количеству гостей.
-const onRoomsCapacityChange = () => {
+//Соответствие количества комнат количеству гостей.
+const getConformanceRoomsCapacity = () => {
   const optionRooms = inputRoomNumber.value;
   const optionGuests = inputGuestNumber.value;
   if (!roomGuestMapper[optionRooms].includes(optionGuests)) {
@@ -65,4 +71,10 @@ const onRoomsCapacityChange = () => {
   }
 };
 
-export {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange};
+//Функция проверки количества гостей при вводе.
+const onRoomsCapacityChange = (evt) => {
+  evt.preventDefault();
+  getConformanceRoomsCapacity();
+};
+
+export {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, getConformanceTypePrice, getConformanceRoomsCapacity};

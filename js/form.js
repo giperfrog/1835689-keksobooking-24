@@ -1,6 +1,6 @@
-import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange} from './form-valid.js';
+import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, getConformanceTypePrice, getConformanceRoomsCapacity} from './form-valid.js';
 import {sendData} from './api.js';
-import {showErrorMessage, onPageReset} from './util.js';
+import {showErrorMessage, onResetClick} from './util.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
@@ -31,8 +31,8 @@ const makePageInactive = () => {
 //Обработчик отправки формы с данными.
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  onTypePriceChange();
-  onRoomsCapacityChange();
+  getConformanceTypePrice();
+  getConformanceRoomsCapacity();
   if (form.checkValidity()) {
     sendData(
       new FormData(evt.target),
@@ -55,7 +55,7 @@ const makeFormActive = () => {
   inputRoomNumber.addEventListener('change', onRoomsCapacityChange);
   inputGuestNumber.addEventListener('change', onRoomsCapacityChange);
   form.addEventListener('submit', onFormSubmit);
-  button.addEventListener('click', onPageReset);
+  button.addEventListener('click', onResetClick);
 };
 
 //Активация фильтров.

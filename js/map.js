@@ -1,6 +1,6 @@
 import {makeFormActive} from './form.js';
 
-const coordinates = [35.69600, 139.76830];
+const MAIN_PIN_MARKER_COORDINATES = [35.69600, 139.76830];
 
 const typeNameMapper = {
   palace: 'Дворец',
@@ -48,12 +48,12 @@ const createMap = () => {
   ).addTo(map);
   mainPinMarker.addTo(map);
 
-  addressInput.value = `${coordinates[0].toFixed(5)}, ${coordinates[1].toFixed(5)}`;
+  addressInput.value = `${MAIN_PIN_MARKER_COORDINATES[0].toFixed(5)}, ${MAIN_PIN_MARKER_COORDINATES[1].toFixed(5)}`;
 
   mainPinMarker.on('moveend', (evt) => {
-    const selectionAddress = evt.target.getLatLng();
-    const lat = Math.round(selectionAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
-    const lng = Math.round(selectionAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
+    const selectedAddress = evt.target.getLatLng();
+    const lat = Math.round(selectedAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
+    const lng = Math.round(selectedAddress.lng * Math.pow(10, 5)) / Math.pow(10, 5);
     addressInput.value = `${lat}, ${lng}`;
   });
 };
@@ -137,4 +137,4 @@ const createMarker = (offer) => {
   return marker;
 };
 
-export {createMap, createMarker, mainPinMarker, markerGroup, coordinates};
+export {createMap, createMarker, mainPinMarker, markerGroup, MAIN_PIN_MARKER_COORDINATES};

@@ -9,10 +9,10 @@ let initialOffers;
 const OFFERS_SHOW = 10;
 const RERENDER_DELAY = 500;
 
-const optionType = document.querySelector('#housing-type');
-const optionPrice = document.querySelector('#housing-price');
-const optionRooms = document.querySelector('#housing-rooms');
-const optionGuests = document.querySelector('#housing-guests');
+const selectedType = document.querySelector('#housing-type');
+const selectedPrice = document.querySelector('#housing-price');
+const selectedRooms = document.querySelector('#housing-rooms');
+const selectedGuests = document.querySelector('#housing-guests');
 const featuresContainer = document.querySelector('#housing-features');
 const featuresInputs = featuresContainer.querySelectorAll('.map__checkbox');
 
@@ -31,16 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   makeFiltersActive();
   const onFiltersChange = () => {
-    let filterOffers = initialOffers;
+    let filteredOffers = initialOffers;
 
     markerGroup.clearLayers();
 
-    if (optionType.value !== 'any') {
-      filterOffers = filterOffers.filter((offer) => (offer.offer.type === optionType.value));
+    if (selectedType.value !== 'any') {
+      filteredOffers = filteredOffers.filter((offer) => (offer.offer.type === selectedType.value));
     }
-    if (optionPrice.value !== 'any') {
-      filterOffers = filterOffers.filter( (offer) => {
-        switch (optionPrice.value) {
+    if (selectedPrice.value !== 'any') {
+      filteredOffers = filteredOffers.filter( (offer) => {
+        switch (selectedPrice.value) {
           case 'low':
             return offer.offer.price < 10000;
           case 'middle':
@@ -50,16 +50,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
-    if (optionRooms.value !== 'any') {
-      filterOffers = filterOffers.filter((offer) => (offer.offer.rooms === +optionRooms.value));
+    if (selectedRooms.value !== 'any') {
+      filteredOffers = filteredOffers.filter((offer) => (offer.offer.rooms === +selectedRooms.value));
     }
-    if (optionGuests.value !== 'any') {
-      filterOffers = filterOffers.filter((offer) => (offer.offer.guests === +optionGuests.value));
+    if (selectedGuests.value !== 'any') {
+      filteredOffers = filteredOffers.filter((offer) => (offer.offer.guests === +selectedGuests.value));
     }
 
     const selectedFeatures = [...featuresInputs].filter((input) => input.checked);
     if (selectedFeatures.length) {
-      filterOffers = filterOffers.filter((offer) => {
+      filteredOffers = filteredOffers.filter((offer) => {
         if (offer.offer.features) {
           return selectedFeatures.every((feature) => offer.offer.features.includes(feature.value));
         }
@@ -67,15 +67,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    filterOffers.slice(0, OFFERS_SHOW).forEach((offer) => {
+    filteredOffers.slice(0, OFFERS_SHOW).forEach((offer) => {
       createMarker(offer);
     });
   };
 
-  optionType.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
-  optionPrice.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
-  optionRooms.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
-  optionGuests.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
+  selectedType.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
+  selectedPrice.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
+  selectedRooms.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
+  selectedGuests.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
   featuresContainer.addEventListener('click', debounce(() => onFiltersChange(), RERENDER_DELAY));
 });
 
