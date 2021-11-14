@@ -1,4 +1,4 @@
-import {mainPinMarker, markerGroup, MAIN_PIN_MARKER_COORDINATES} from './map.js';
+import {mainPinMarker, markerGroup, showMainMarkerCoordinate} from './map.js';
 import {drawOffers} from './main.js';
 
 const adFormElement = document.querySelector('.ad-form');
@@ -12,7 +12,7 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 
 //Функция для очистки страницы.
-const getClearFormOnPage = () => {
+const resetPage = () => {
   adFormElement.reset();
   mapFiltersElement.reset();
   markerGroup.clearLayers();
@@ -22,15 +22,17 @@ const getClearFormOnPage = () => {
   });
   drawOffers();
   inputPrice.placeholder = '5000';
-  addressInput.value = `${MAIN_PIN_MARKER_COORDINATES[0].toFixed(5)}, ${MAIN_PIN_MARKER_COORDINATES[1].toFixed(5)}`;
+  addressInput.value = showMainMarkerCoordinate();
   preview1.querySelector('img').src = 'img/muffin-grey.svg';
-  photoHousing.querySelector('img').remove();
+  if (photoHousing.querySelector('img')) {
+    photoHousing.querySelector('img').remove();
+  }
 };
 
 //Функция для очистки по кнопке сброса.
 const onResetClick = (evt) => {
   evt.preventDefault();
-  getClearFormOnPage();
+  resetPage();
 };
 
 //Если загрузка прошла успешно.
@@ -54,7 +56,7 @@ const onSuccessForm = () => {
     elementShowSuccess.remove();
   });
 
-  getClearFormOnPage();
+  resetPage();
 };
 
 //Если загрузка прошла с ошибкой.

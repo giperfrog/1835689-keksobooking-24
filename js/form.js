@@ -1,4 +1,4 @@
-import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, getConformanceTypePrice, getConformanceRoomsCapacity} from './form-valid.js';
+import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, checkTypePriceMapping, checkRoomsCapacityMapping} from './form-valid.js';
 import {sendData} from './api.js';
 import {showErrorMessage, onResetClick} from './util.js';
 
@@ -31,8 +31,8 @@ const makePageInactive = () => {
 //Обработчик отправки формы с данными.
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  getConformanceTypePrice();
-  getConformanceRoomsCapacity();
+  checkTypePriceMapping();
+  checkRoomsCapacityMapping();
   if (form.checkValidity()) {
     sendData(
       new FormData(evt.target),

@@ -38,7 +38,7 @@ const onTitleChange = () => {
 };
 
 //Соответствие минимальной цены типу жилья.
-const getConformanceTypePrice = () => {
+const checkTypePriceMapping = () => {
   const selectedType = inputType.value;
   if (typePriceMapper[selectedType]) {
     inputPrice.placeholder = typePriceMapper[selectedType];
@@ -49,7 +49,7 @@ const getConformanceTypePrice = () => {
 //Функция проверки цены при вводе.
 const onTypePriceChange = (evt) => {
   evt.preventDefault();
-  getConformanceTypePrice();
+  checkTypePriceMapping();
 };
 
 //Синхронизация время заезда и время выезда.
@@ -61,11 +61,11 @@ const onTimeOutChange = () => {
 };
 
 //Соответствие количества комнат количеству гостей.
-const getConformanceRoomsCapacity = () => {
-  const optionRooms = inputRoomNumber.value;
-  const optionGuests = inputGuestNumber.value;
-  if (!roomGuestMapper[optionRooms].includes(optionGuests)) {
-    inputGuestNumber.setCustomValidity(`${optionRooms}комн. - для ${roomGuestMapper[optionRooms].join(' или ')} гостей.`);
+const checkRoomsCapacityMapping = () => {
+  const selectedRooms = inputRoomNumber.value;
+  const selectedGuests = inputGuestNumber.value;
+  if (!roomGuestMapper[selectedRooms].includes(selectedGuests)) {
+    inputGuestNumber.setCustomValidity(`${selectedRooms}комн. - для ${roomGuestMapper[selectedRooms].join(' или ')} гостей.`);
   } else {
     inputGuestNumber.setCustomValidity('');
   }
@@ -74,7 +74,7 @@ const getConformanceRoomsCapacity = () => {
 //Функция проверки количества гостей при вводе.
 const onRoomsCapacityChange = (evt) => {
   evt.preventDefault();
-  getConformanceRoomsCapacity();
+  checkRoomsCapacityMapping();
 };
 
-export {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, getConformanceTypePrice, getConformanceRoomsCapacity};
+export {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, checkTypePriceMapping, checkRoomsCapacityMapping};

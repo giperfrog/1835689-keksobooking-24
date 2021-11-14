@@ -1,7 +1,5 @@
 import {makeFormActive} from './form.js';
 
-const MAIN_PIN_MARKER_COORDINATES = [35.69600, 139.76830];
-
 const typeNameMapper = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -48,8 +46,6 @@ const createMap = () => {
   ).addTo(map);
   mainPinMarker.addTo(map);
 
-  addressInput.value = `${MAIN_PIN_MARKER_COORDINATES[0].toFixed(5)}, ${MAIN_PIN_MARKER_COORDINATES[1].toFixed(5)}`;
-
   mainPinMarker.on('moveend', (evt) => {
     const selectedAddress = evt.target.getLatLng();
     const lat = Math.round(selectedAddress.lat * Math.pow(10, 5)) / Math.pow(10, 5);
@@ -57,6 +53,16 @@ const createMap = () => {
     addressInput.value = `${lat}, ${lng}`;
   });
 };
+
+//Показ координат оснвного маркера.
+const showMainMarkerCoordinate = () => {
+  const coordinate = [35.69600, 139.76830];
+  const lat = coordinate[0].toFixed(5);
+  const lng = coordinate[1].toFixed(5);
+  return `${lat}, ${lng}`;
+};
+
+addressInput.value = showMainMarkerCoordinate();
 
 const offerTemplate = document.querySelector('#card')
   .content
@@ -137,4 +143,4 @@ const createMarker = (offer) => {
   return marker;
 };
 
-export {createMap, createMarker, mainPinMarker, markerGroup, MAIN_PIN_MARKER_COORDINATES};
+export {createMap, createMarker, mainPinMarker, markerGroup, showMainMarkerCoordinate};
