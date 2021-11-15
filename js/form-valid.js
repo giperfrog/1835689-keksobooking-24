@@ -16,35 +16,40 @@ const typePriceMapper = {
   palace: '10000',
 };
 
-const title = document.querySelector('#title');
-//const address = document.querySelector('#address');
-const roomNumber = document.querySelector('#room_number');
-const guestNumber = document.querySelector('#capacity');
-const type = document.querySelector('#type');
+const inputTitle = document.querySelector('#title');
+const inputType = document.querySelector('#type');
+const inputRoomNumber = document.querySelector('#room_number');
+const inputGuestNumber = document.querySelector('#capacity');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
-const price = document.querySelector('#price');
+const inputPrice = document.querySelector('#price');
 
 //Подсказка на короткое и длинное значение.
 const onTitleChange = () => {
-  const titleLength = title.value.length;
+  const titleLength = inputTitle.value.length;
   if (titleLength < MIN_TITLE_LENGTH) {
-    title.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
+    inputTitle.setCustomValidity(`Ещё ${MIN_TITLE_LENGTH - titleLength} симв.`);
   } else if (titleLength > MAX_TITLE_LENGTH) {
-    title.setCustomValidity(`Удалите лишние ${titleLength - MAX_TITLE_LENGTH} симв.`);
+    inputTitle.setCustomValidity(`Удалите лишние ${titleLength - MAX_TITLE_LENGTH} симв.`);
   } else {
-    title.setCustomValidity('');
+    inputTitle.setCustomValidity('');
   }
-  title.reportValidity();
+  inputTitle.reportValidity();
 };
 
 //Соответствие минимальной цены типу жилья.
-const onTypePriceChange = () => {
-  const selectType = type.value;
-  if (typePriceMapper[selectType]) {
-    price.placeholder = typePriceMapper[selectType];
-    price.min = typePriceMapper[selectType];
+const checkTypePriceMapping = () => {
+  const selectedType = inputType.value;
+  if (typePriceMapper[selectedType]) {
+    inputPrice.placeholder = typePriceMapper[selectedType];
+    inputPrice.min = typePriceMapper[selectedType];
   }
+};
+
+//Функция проверки цены при вводе.
+const onTypePriceChange = (evt) => {
+  evt.preventDefault();
+  checkTypePriceMapping();
 };
 
 //Синхронизация время заезда и время выезда.
@@ -55,15 +60,21 @@ const onTimeOutChange = () => {
   timeIn.value = timeOut.value;
 };
 
-// Проверка соответствия количества комнат количеству гостей.
-const onRoomsCapacityChange = () => {
-  const selectedRooms = roomNumber.value;
-  const selectedGuests = guestNumber.value;
+//Соответствие количества комнат количеству гостей.
+const checkRoomsCapacityMapping = () => {
+  const selectedRooms = inputRoomNumber.value;
+  const selectedGuests = inputGuestNumber.value;
   if (!roomGuestMapper[selectedRooms].includes(selectedGuests)) {
-    guestNumber.setCustomValidity(`${selectedRooms}комн. - для ${roomGuestMapper[selectedRooms].join(' или ')} гостей.`);
+    inputGuestNumber.setCustomValidity(`${selectedRooms}комн. - для ${roomGuestMapper[selectedRooms].join(' или ')} гостей.`);
   } else {
-    guestNumber.setCustomValidity('');
+    inputGuestNumber.setCustomValidity('');
   }
 };
 
-export {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange};
+//Функция проверки количества гостей при вводе.
+const onRoomsCapacityChange = (evt) => {
+  evt.preventDefault();
+  checkRoomsCapacityMapping();
+};
+
+export {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, checkTypePriceMapping, checkRoomsCapacityMapping};

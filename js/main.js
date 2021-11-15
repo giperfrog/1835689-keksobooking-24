@@ -2,8 +2,11 @@ import {getData} from './api.js';
 import {createMap, createMarker, markerGroup} from './map.js';
 import {makePageInactive, makeFiltersActive} from './form.js';
 import {debounce} from './util.js';
+import './avatar.js';
 
-const OFFER_SHOW = 10;
+let initialOffers;
+
+const OFFERS_SHOW = 10;
 const RERENDER_DELAY = 500;
 
 const selectedType = document.querySelector('#housing-type');
@@ -12,10 +15,9 @@ const selectedRooms = document.querySelector('#housing-rooms');
 const selectedGuests = document.querySelector('#housing-guests');
 const featuresContainer = document.querySelector('#housing-features');
 const featuresInputs = featuresContainer.querySelectorAll('.map__checkbox');
-let initialOffers;
 
 const drawOffers = (offers = initialOffers) => {
-  offers.slice(0, OFFER_SHOW).forEach((offer) => {
+  offers.slice(0, OFFERS_SHOW).forEach((offer) => {
     createMarker(offer);
   });
 };
@@ -65,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    filteredOffers.slice(0, OFFER_SHOW).forEach((offer) => {
+    filteredOffers.slice(0, OFFERS_SHOW).forEach((offer) => {
       createMarker(offer);
     });
   };
