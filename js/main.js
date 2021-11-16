@@ -28,8 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
   getData((offers) => {
     initialOffers = offers;
     drawOffers();
+    makeFiltersActive();
   });
-  makeFiltersActive();
+
   const onFiltersChange = () => {
     let filteredOffers = initialOffers;
 
@@ -72,11 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  selectedType.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
-  selectedPrice.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
-  selectedRooms.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
-  selectedGuests.addEventListener('change', debounce(() => onFiltersChange(), RERENDER_DELAY));
-  featuresContainer.addEventListener('click', debounce(() => onFiltersChange(), RERENDER_DELAY));
+  selectedType.addEventListener('change', debounce(onFiltersChange, RERENDER_DELAY));
+  selectedPrice.addEventListener('change', debounce(onFiltersChange, RERENDER_DELAY));
+  selectedRooms.addEventListener('change', debounce(onFiltersChange, RERENDER_DELAY));
+  selectedGuests.addEventListener('change', debounce(onFiltersChange, RERENDER_DELAY));
+  featuresContainer.addEventListener('click', debounce(onFiltersChange, RERENDER_DELAY));
 });
 
 export {drawOffers};

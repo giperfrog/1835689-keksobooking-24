@@ -1,6 +1,6 @@
 import {onTitleChange, onTypePriceChange, onTimeInChange, onTimeOutChange, onRoomsCapacityChange, checkTypePriceMapping, checkRoomsCapacityMapping} from './form-valid.js';
 import {sendData} from './api.js';
-import {showErrorMessage, onResetClick} from './util.js';
+import {onResetClick} from './util.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
@@ -37,8 +37,6 @@ const onFormSubmit = (evt) => {
     sendData(
       new FormData(evt.target),
     );
-  } else {
-    showErrorMessage();
   }
 };
 

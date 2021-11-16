@@ -1,4 +1,4 @@
-import {onSuccessForm, showErrorMessage} from './util.js';
+import {showErrorOnLoad, onSuccessForm, showErrorMessage} from './util.js';
 
 const getData = (onSuccess) => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')
@@ -6,10 +6,12 @@ const getData = (onSuccess) => {
       if (response.ok) {
         return response.json();
       }
-      throw new Error(`${response.status} ${response.statusText}`);
     })
     .then((offers) => {
       onSuccess(offers);
+    })
+    .catch(() => {
+      showErrorOnLoad('Ошибка загрузки данных.');
     });
 };
 

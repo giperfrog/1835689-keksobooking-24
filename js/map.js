@@ -1,5 +1,7 @@
 import {makeFormActive} from './form.js';
 
+const MAIN_PIN_MARKER_COORDINATE = [35.69600, 139.76830];
+
 const typeNameMapper = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -55,14 +57,13 @@ const createMap = () => {
 };
 
 //Показ координат оснвного маркера.
-const showMainMarkerCoordinate = () => {
-  const coordinate = [35.69600, 139.76830];
-  const lat = coordinate[0].toFixed(5);
-  const lng = coordinate[1].toFixed(5);
+const getMainMarkerCoordinate = () => {
+  const lat = MAIN_PIN_MARKER_COORDINATE[0].toFixed(5);
+  const lng = MAIN_PIN_MARKER_COORDINATE[1].toFixed(5);
   return `${lat}, ${lng}`;
 };
 
-addressInput.value = showMainMarkerCoordinate();
+addressInput.value = getMainMarkerCoordinate();
 
 const offerTemplate = document.querySelector('#card')
   .content
@@ -79,10 +80,10 @@ const createPopup = (offer) => {
   offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.offer.checkin}, выезд до ${offer.offer.checkout}`;
 
   const features = offer.offer.features;
-  const featuresContainer = offerElement.querySelector('.popup__features');
-  const featureList = featuresContainer.querySelectorAll('.popup__feature');
+  const featuresContainerElements = offerElement.querySelector('.popup__features');
+  const featureList = featuresContainerElements.querySelectorAll('.popup__feature');
   if (!features) {
-    featuresContainer.classList.add('hidden');
+    featuresContainerElements.classList.add('hidden');
   } else {
     featureList.forEach((featureListItem) => {
       const isNecessary = features.some(
@@ -98,16 +99,16 @@ const createPopup = (offer) => {
   offerElement.querySelector('.popup__description').textContent = offer.offer.description;
 
   const photos = offer.offer.photos;
-  const photosContainer = offerElement.querySelector('.popup__photos');
+  const photosContainerElements = offerElement.querySelector('.popup__photos');
   if (!photos) {
-    photosContainer.classList.add('hidden');
+    photosContainerElements.classList.add('hidden');
   } else {
     const photoTemplate = offerElement.querySelector('img.popup__photo');
     photoTemplate.remove();
     photos.forEach((photoItem) => {
       const photo = photoTemplate.cloneNode(false);
       photo.src = photoItem;
-      photosContainer.appendChild(photo);
+      photosContainerElements.appendChild(photo);
     });
   }
 
@@ -143,4 +144,4 @@ const createMarker = (offer) => {
   return marker;
 };
 
-export {createMap, createMarker, mainPinMarker, markerGroup, showMainMarkerCoordinate};
+export {createMap, createMarker, mainPinMarker, markerGroup, getMainMarkerCoordinate};

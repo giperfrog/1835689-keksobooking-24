@@ -1,6 +1,7 @@
-import {mainPinMarker, markerGroup, showMainMarkerCoordinate} from './map.js';
+import {mainPinMarker, markerGroup, getMainMarkerCoordinate} from './map.js';
 import {drawOffers} from './main.js';
 
+const SHOW_TIME = 5000;
 const adFormElement = document.querySelector('.ad-form');
 const mapFiltersElement = document.querySelector('.map__filters');
 const addressInput = document.querySelector('#address');
@@ -21,8 +22,9 @@ const resetPage = () => {
     lng: 139.76830,
   });
   drawOffers();
-  inputPrice.placeholder = '5000';
-  addressInput.value = showMainMarkerCoordinate();
+  inputPrice.placeholder = '1000';
+  inputPrice.min = '1000';
+  addressInput.value = getMainMarkerCoordinate();
   preview1.querySelector('img').src = 'img/muffin-grey.svg';
   if (photoHousing.querySelector('img')) {
     photoHousing.querySelector('img').remove();
@@ -35,7 +37,20 @@ const onResetClick = (evt) => {
   resetPage();
 };
 
-//Если загрузка прошла успешно.
+//Ошибка, если данные с сервера не получены.
+const showErrorOnLoad = (message) => {
+  const templateError = document.querySelector('#error')
+    .content
+    .querySelector('.error');
+  const elementShowError = templateError.cloneNode(true);
+  elementShowError.querySelector('.error__message').textContent = message;
+  document.body.append(elementShowError);
+  setTimeout(() => {
+    elementShowError.remove();
+  }, SHOW_TIME);
+};
+
+//Если отправка данных прошла успешно.
 const onSuccessForm = () => {
   const templateSuccess = document.querySelector('#success')
     .content
@@ -59,7 +74,7 @@ const onSuccessForm = () => {
   resetPage();
 };
 
-//Если загрузка прошла с ошибкой.
+//Ошибка на отправку данных.
 const showErrorMessage = () => {
   const templateError = document.querySelector('#error')
     .content
@@ -93,4 +108,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {onResetClick, onSuccessForm, showErrorMessage, debounce};
+export {showErrorOnLoad, onResetClick, onSuccessForm, showErrorMessage, debounce};
