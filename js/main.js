@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {getData} from './api.js';
 import {createMap, createMarker, markerGroup} from './map.js';
 import {makePageInactive, makeFiltersActive} from './form.js';
@@ -22,6 +23,39 @@ const drawOffers = (offers = initialOffers) => {
   });
 };
 
+const checkOfferType = (offer) => selectedType.value === offer.offer.type || selectedType.value === 'any';
+const checkOfferPrice = (offer) => {
+  switch (selectedPrice.value) {
+    case 'low':
+      return offer.offer.price < 10000;
+    case 'middle':
+      return (offer.offer.price >= 10000 && offer.offer.price < 50000);
+    case 'high':
+      return offer.offer.price >= 50000;
+    case 'any':
+      return true;
+  }
+};
+const checkOfferRooms = (offer) => +selectedRooms.value === offer.offer.rooms || selectedRooms.value === 'any';
+const checkOfferGuests = (offer) => +selectedGuests.value === offer.offer.guests || selectedGuests.value === 'any';
+const checkFeaturesFilters = (offer) => {
+  const selectedFeatures = [...featuresInputs].filter((input) => input.checked);
+  if (selectedFeatures.length) {
+    if (offer.offer.features) {
+      return selectedFeatures.every((feature) => offer.offer.features.includes(feature.value));
+    }
+    return true;
+  }
+};
+
+const filters = [
+  checkOfferType,
+  checkOfferPrice,
+  checkOfferRooms,
+  checkOfferGuests,
+  checkFeaturesFilters,
+];
+
 document.addEventListener('DOMContentLoaded', () => {
   makePageInactive();
   createMap();
@@ -32,45 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const onFiltersChange = () => {
-    let filteredOffers = initialOffers;
-
+    const filteredOffers = [];
     markerGroup.clearLayers();
 
-    if (selectedType.value !== 'any') {
-      filteredOffers = filteredOffers.filter((offer) => (offer.offer.type === selectedType.value));
-    }
-    if (selectedPrice.value !== 'any') {
-      filteredOffers = filteredOffers.filter( (offer) => {
-        switch (selectedPrice.value) {
-          case 'low':
-            return offer.offer.price < 10000;
-          case 'middle':
-            return (offer.offer.price >= 10000 && offer.offer.price < 50000);
-          case 'high':
-            return offer.offer.price >= 50000;
-        }
-      });
-    }
-    if (selectedRooms.value !== 'any') {
-      filteredOffers = filteredOffers.filter((offer) => (offer.offer.rooms === +selectedRooms.value));
-    }
-    if (selectedGuests.value !== 'any') {
-      filteredOffers = filteredOffers.filter((offer) => (offer.offer.guests === +selectedGuests.value));
+    for (let i = 0; i < initialOffers.length && filteredOffers.length < 10; i++) {
+      const offer = initialOffers[i];
+      if (filters.every((applyFilter) => applyFilter(offer))) {
+        filteredOffers.push(offer);
+      }
     }
 
-    const selectedFeatures = [...featuresInputs].filter((input) => input.checked);
-    if (selectedFeatures.length) {
-      filteredOffers = filteredOffers.filter((offer) => {
-        if (offer.offer.features) {
-          return selectedFeatures.every((feature) => offer.offer.features.includes(feature.value));
-        }
-        return false;
-      });
-    }
-
-    filteredOffers.slice(0, OFFERS_SHOW).forEach((offer) => {
-      createMarker(offer);
-    });
+    filteredOffers.forEach((offer) => createMarker(offer));
   };
 
   selectedType.addEventListener('change', debounce(onFiltersChange, RERENDER_DELAY));
@@ -81,3 +87,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 export {drawOffers};
+
