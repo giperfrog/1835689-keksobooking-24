@@ -11,8 +11,7 @@ const photoHousing = document.querySelector('.ad-form__photo');
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-
-//Функция для очистки страницы.
+//Для очистки страницы.
 const resetPage = () => {
   adFormElement.reset();
   mapFiltersElement.reset();
@@ -31,13 +30,13 @@ const resetPage = () => {
   }
 };
 
-//Функция для очистки по кнопке сброса.
+//Для очистки по кнопке сброса.
 const onResetClick = (evt) => {
   evt.preventDefault();
   resetPage();
 };
 
-//Ошибка, если данные с сервера не получены.
+//Если данные с сервера не получены.
 const showErrorOnLoad = (message) => {
   const templateError = document.querySelector('#error')
     .content
@@ -50,49 +49,25 @@ const showErrorOnLoad = (message) => {
   }, SHOW_TIME);
 };
 
-//Если отправка данных прошла успешно.
-const onSuccessForm = () => {
-  const templateSuccess = document.querySelector('#success')
+//Отправка данных на сервер.
+const onSendData = (template) => {
+  const templateMessage = document.querySelector(`#${template}`)
     .content
-    .querySelector('.success');
-  const elementShowSuccess = templateSuccess.cloneNode(true);
-  document.body.append(elementShowSuccess);
+    .querySelector(`.${template}`);
+  const showElement = templateMessage.cloneNode(true);
+  document.body.append(showElement);
 
   const onKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      elementShowSuccess.remove();
+      showElement.remove();
       document.removeEventListener('keydown', onKeydown);
     }
   };
   document.addEventListener('keydown', onKeydown);
 
-  elementShowSuccess.addEventListener('click', () => {
-    elementShowSuccess.remove();
-  });
-
-  resetPage();
-};
-
-//Ошибка на отправку данных.
-const showErrorMessage = () => {
-  const templateError = document.querySelector('#error')
-    .content
-    .querySelector('.error');
-  const elementShowError = templateError.cloneNode(true);
-  document.body.append(elementShowError);
-
-  const onKeydown = (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      elementShowError.remove();
-      document.removeEventListener('keydown', onKeydown);
-    }
-  };
-  document.addEventListener('keydown', onKeydown);
-
-  elementShowError.addEventListener('click', () => {
-    elementShowError.remove();
+  showElement.addEventListener('click', () => {
+    showElement.remove();
   });
 };
 
@@ -108,4 +83,4 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-export {showErrorOnLoad, onResetClick, onSuccessForm, showErrorMessage, debounce};
+export {resetPage, showErrorOnLoad, onResetClick, onSendData, debounce};

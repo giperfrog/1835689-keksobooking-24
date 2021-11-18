@@ -1,4 +1,4 @@
-import {showErrorOnLoad, onSuccessForm, showErrorMessage} from './util.js';
+import {showErrorOnLoad, onSendData, resetPage} from './util.js';
 
 const getData = (onSuccess) => {
   fetch('https://24.javascript.pages.academy/keksobooking/data')
@@ -25,13 +25,14 @@ const sendData = (body) => {
   )
     .then((response) => {
       if (response.ok) {
-        onSuccessForm();
+        onSendData('success');
+        resetPage();
       } else {
-        showErrorMessage();
+        onSendData('error');
       }
     })
     .catch(() => {
-      showErrorMessage();
+      onSendData('error');
     });
 };
 

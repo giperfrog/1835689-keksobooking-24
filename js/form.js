@@ -6,6 +6,7 @@ const adFormElement = document.querySelector('.ad-form');
 const adFormInteractiveElements = adFormElement.querySelectorAll('fieldset');
 const mapFiltersElement = document.querySelector('.map__filters');
 const mapFiltersInteractiveElements = [...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
+const interactiveElements = [...adFormElement.querySelectorAll('fieldset'), ...mapFiltersElement.querySelectorAll('select'), ...mapFiltersElement.querySelectorAll('fieldset')];
 const inputTitle = document.querySelector('#title');
 const inputType = document.querySelector('#type');
 const inputTimeIn = document.querySelector('#timein');
@@ -18,12 +19,8 @@ const form = document.querySelector('.ad-form');
 //Неактивное состояние страницы.
 const makePageInactive = () => {
   adFormElement.classList.add('ad-form--disabled');
-  adFormInteractiveElements.forEach((element) => {
-    element.disabled = true;
-  });
-
   mapFiltersElement.classList.add('map__filters--disabled');
-  mapFiltersInteractiveElements.forEach((element) => {
+  interactiveElements.forEach((element) => {
     element.disabled = true;
   });
 };
